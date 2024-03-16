@@ -22,12 +22,12 @@
         </form>
     </li>
     {% endfor %}
-
-    <form action="create_lobby" method="post">
-        {% csrf_token %}
-        <button class="leave-btn create-lobby" type="submit"><span>Create new lobby</span></button>
-    </form>
+    
   </div>
+  <form action="create_lobby" method="post">
+      {% csrf_token %}
+      <button class="leave-btn create-lobby" type="submit"><span>Create new lobby</span></button>
+  </form>
 
 </body>
 </html>

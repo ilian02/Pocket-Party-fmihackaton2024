@@ -6,17 +6,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>NoName</title>
   <link rel="stylesheet" href="{% static 'styles_landing.css'%}">
+  <!-- <link rel="stylesheet" href="{% static 'buttons.css'%}"> -->
 </head>
 <body>
   <div class="container">
     <h1>NoName</h1>
     <h2>Join game</h2>
-    <input type="text" id='' name="to_lobby" placeholder="Enter game link or code">
+    <div class="link-code">
+      <input type="text" name="to_lobby" placeholder="Enter game link or code">
+      <!-- <button class="join-btn" type="submit"><a href="#"><span>Join</span></a></button> -->
+      <button class="button" data-text="Awesome">
+        <span class="actual-text">&nbsp;Join&nbsp;</span>
+        <span aria-hidden="true" class="hover-text">&nbsp;Join&nbsp;</span>
+    </button>
+    </div>
     <h3>or host a new game</h3>
     
     <div class="button-container">
-        <button class="request-btn" type="submit"><span>Request link</span></button>
-        <button class="request-btn" type="submit"><span>Request code</button>
+        <button class="request-btn" type="submit"><span>Create new lobby</span></button>
     </div>
 
   </div>

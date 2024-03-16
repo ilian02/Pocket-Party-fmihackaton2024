@@ -1,6 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Big+Shoulders+Stencil+Text:wght@100..900&family=Truculenta:opsz,wght@12..72,100..900&family=Yanone+Kaffeesatz:wght@200..700&display=swap');
+html{
+    font-family: "Truculenta", sans-serif;
+}
 body{
     justify-content: center;
     background-image: url("../static/console-background.png");
+    
 }
 @media (min-width:480px)  { 
     #game-buttons {
@@ -138,7 +143,7 @@ body{
    }
    
    .leave-btn span {
-    font-size: 15px;
+    font-size: 17px;
     z-index: 3;
     position: relative;
     font-weight: 600;
@@ -189,4 +194,12 @@ body{
 
   .create-lobby {
     margin: 10px;
+    text-transform: uppercase;
+    font-size: 16px;
+  }
+
+  .container li {
+    align-items: center;
+    justify-content: center;
+    display: flex;
   }
