@@ -6,6 +6,7 @@
 
     #game-buttons {
         align-items: center;
+        margin: 5%;
     }
 
     #up-btn {
