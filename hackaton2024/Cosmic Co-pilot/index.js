@@ -5,7 +5,7 @@ const CANVAS_WIDTH = 1920;
 const CANVAS_HEIGHT = 1080;
 
 class SpaceshipGame {
-    constructor(canvasId, backgroundColor) {
+    constructor(canvasId) {
         this.canvas = document.getElementById(canvasId);
         this.ctx = this.canvas.getContext('2d');
 
@@ -13,6 +13,7 @@ class SpaceshipGame {
         this.backgroundImage.src = "./assets/im2.png";
 
         this.ship = new Ship(new CollisionBox(100, 100, SHIP_WIDTH, SHIP_HEIGHT), "./assets/testship.png");
+        this.asteroid = new Asteroid(new CollisionBox(100, 100, SHIP_WIDTH, SHIP_HEIGHT))
     }
   
     // Function to draw the background and update visuals
@@ -21,6 +22,7 @@ class SpaceshipGame {
         this.ctx.drawImage(this.backgroundImage, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
         this.moveShip(this.ship.collBox.x + 1, this.ship.collBox.y + 1);
         this.ship.draw(this.ctx); // Delegate drawing to the Ship class
+        this.asteroid.draw(this.ctx);
     }
     
     // Function to start the game loop
@@ -57,8 +59,10 @@ window.onload = function() {
     game.start();
 };
 
+
+//animations!!!!!!!!!!
 class Ship {
-    constructor(collBox, imageURL) {
+    constructor (collBox, imageURL) {
         this.collBox = collBox;  //CollisionBox(100, 100, settings.SHIP_WIDTH, settings.SHIP_HEIGHT);
         this.image = new Image();
         this.image.src = imageURL;
@@ -70,7 +74,22 @@ class Ship {
     }
 }
 
+class Asteroid {
+    constructor (collBox, imageURL, dx, dy) {
+        this.collBox = collBox;
+        this.image = new Image();
+        this.image.src = imageURL;
+        this.dx = dx;
+        this.dy = dy;
+    }
+    draw(ctx) {
+        ctx.drawImage(this.image, this.collBox.x, this.collBox.y, this.collBox.width, this.collBox.height);
+        console.log(getRandomAsteroidURL());
+    }
 
+
+
+}
 
 
 class CollisionBox {
@@ -93,12 +112,11 @@ class CollisionBox {
 }
 
 
-const box1 = new CollisionBox(100, 200, 50, 50); // Create a box
-const box2 = new CollisionBox(150, 180, 60, 40); // Create another box
-
-// Check if box1 collides with box2
-if (box1.collidesWith(box2)) {
-    console.log("Collision detected!");
-} else {
-    console.log("No collision.");
+function getRandomAsteroidURL() {
+    let asteroidNumber = getRandomInt(17) + 1;
+    return "./assets/comets/Picture" + asteroidNumber + ".png";
 }
+
+function getRandomInt(max) {
+    return Math.floor(Math.random() * max);
+  }
