@@ -7,6 +7,7 @@ const CANVAS_HEIGHT = 1080;
 
 class SpaceshipGame {
     constructor(canvasId) {
+        this.tick = 0;
         this.canvas = document.getElementById(canvasId);
         this.ctx = this.canvas.getContext('2d');
 
@@ -16,38 +17,43 @@ class SpaceshipGame {
         this.ship = new Ship(new CollisionBox(200, 500, 10, 10), "./assets/Ship6/Ship6.png");
         
         
-        
+        this.boss = new Boss(new CollisionBox(1200, 340, 0, 0), "./assets/extras/boss.png");
 
-        this.ship.collBox.collidesWith(this.ship.collBox)
         this.asteroids = [];
         this.projectiles = [];
     }
   
     update() {
+        this.tick += 1;
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
         this.ctx.drawImage(this.backgroundImage, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
         this.moveShip(this.ship.collBox.x, this.ship.collBox.y);
         this.ship.draw(this.ctx);
 
-        if (getRandomInt(100) <= 10) {
-            for(let asteroid of this.createAsteroids()){
-                this.projectiles.push(this.createProjectile(this.ship.collBox));
-            }
+        this.boss.draw(this.ctx);
+
+
+        if (this.tick % 60 == 0) {
+            this.projectiles.push(this.createProjectile(this.ship.collBox));
         }
 
         let deleteProjectilesIndexes = []
-        for (let projecile of this.projectiles) {
+        for (let projectile of this.projectiles) {
 
             //console.log(asteroid.collBox.r);
-            if (projecile.removeCondition()) {
+            if (projectile.removeCondition()) {
                 deleteProjectilesIndexes.push(this.projectiles.indexOf(projectile));
             }
-            projecile.draw(this.ctx);
+            projectile.draw(this.ctx);
             
             //if (this.ship.collBox.collidesWith(asteroid.collBox)) {
                 //console.log("collides");
                 //deleteAsteroidsIndexes.push(this.asteroids.indexOf(asteroid));
             //}
+        }
+
+        for (let index of deleteProjectilesIndexes.reverse()) {
+            this.projectiles.splice(index, 1);
         }
 
 
@@ -166,6 +172,43 @@ class Ship {
     }
 }
 
+class Boss {
+    constructor (collBox, imageURL) {
+        this.collBox = collBox;  //CollisionBox(100, 100, settings.SHIP_WIDTH, settings.SHIP_HEIGHT);
+        this.image = new Image();
+        this.image.src = imageURL;
+        
+        this.dx = getRandomSign() * (getRandomInt(4) + 2);
+        this.dy = getRandomSign() * (getRandomInt(4) + 2);
+
+
+        this.image.onload = () => {
+            this.collBox.width = this.image.naturalWidth;
+            this.collBox.height = this.image.naturalHeight;
+        }
+
+    }
+    draw(ctx, shipCollBox) {
+
+        ctx.drawImage(this.image, this.collBox.x, this.collBox.y, this.collBox.width, this.collBox.height);
+        //ctx.fillStyle = "red";
+        //ctx.fillRect(this.collBox.x, this.collBox.y, this.collBox.width, this.collBox.height);
+        //drawing over the coll box using its topleft cords
+        this.collBox.x += this.dx;
+        this.collBox.y += this.dy;
+
+        if (this.collBox.x <= 20 || this.collBox.x >= 1560){
+            this.dx = -signOf(this.dx) * (getRandomInt(5) + 3);
+            this.dy = getRandomInt(11) - 6;
+        }
+        if (this.collBox.y <= 20 || this.collBox.y >= 680){
+            this.dy = -signOf(this.dy) * (getRandomInt(5) + 3);
+            this.dx = getRandomInt(11) - 6;
+        }
+
+    }
+}
+
 class Asteroid {
     constructor (collBox, imageURL, dx, dy) {
         this.collBox = collBox;
@@ -263,10 +306,10 @@ class Projectile {
         //ctx.fillStyle = "red";
         //ctx.fillRect(this.collBox.x, this.collBox.y, this.collBox.width, this.collBox.height);
         //drawing over the coll box using its topleft cords
-        this.collBox.x += 1;
+        this.collBox.x += 5;
     }
     removeCondition() {
-        return (this.collBox.x > 2000);
+        return (this.collBox.x >= 2000);
     }
 
 
@@ -286,4 +329,11 @@ function getRandomSign() {
     return Math.random() < 0.5 ? -1 : 1;
 }
 
-
+function signOf(num){
+    if (num>0) {
+        return 1;
+    }
+    else {
+        return -1;
+    }
+}
