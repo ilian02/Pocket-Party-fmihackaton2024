@@ -1,3 +1,4 @@
+import random
 from django.views import View
 from django.http import HttpResponse
 from django.shortcuts import render
@@ -15,7 +16,10 @@ def lobbies(request):
 
 def join_lobby(request):
     # print(request.POST.get('lobby_id'))
-    return render(request, 'controlers.html')
+    user_id = random.randint(10000, 1000000)
+    print(user_id)
+    print(request.POST.get('lobby_id'))
+    return render(request, 'controlers.html', {'user_id': user_id})
 
 def create_lobby(request):
     print('creating')

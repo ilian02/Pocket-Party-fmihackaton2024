@@ -10,11 +10,17 @@
 </head>
 
 <body>
-    <button class="main-btn-style" onclick="leaveLobby()">
+    <button class="leave-btn" onclick="leaveLobby()">
         <span>Leave lobby</span>
     </button>
 
     <script type="text/javascript">
+
+        if (!localStorage.getItem('user_id')) {
+            // If not, store the generated user ID in local storage
+            localStorage.setItem('user_id', '{{ user_id }}');
+        }
+
         let url = `ws://${window.location.host}/ws/socket-server/`
         const controlSocket = new WebSocket(url)
         controlSocket.onmessage = function(e) {
@@ -22,24 +28,37 @@
             console.log("data: ", data)
         }
 
-        function leaveLobby() {
-            console.log('clicked')
-            controlSocket.send(JSON.stringify({'message': 'I was clicked'}))
+        function up() {
+            console.log('up')
+            controlSocket.send(JSON.stringify({'message_type': 'movement','message': 'up', 'user_id': localStorage.getItem('user_id')}))
         }
 
-        
+        function left() {
+            console.log('left')
+            controlSocket.send(JSON.stringify({'message_type': 'movement','message': 'left', 'user_id': localStorage.getItem('user_id')}))
+        }
+
+        function right() {
+            console.log('right')
+            controlSocket.send(JSON.stringify({'message_type': 'movement','message': 'right', 'user_id': localStorage.getItem('user_id')}))
+        }
+
+        function down() {
+            console.log('down')
+            controlSocket.send(JSON.stringify({'message_type': 'movement','message': 'down', 'user_id': localStorage.getItem('user_id')}))
+        }
     </script>
 
     <div id="game-buttons">
         <div class="btn-row ">
-        <div id="up-btn" class="game-btn"></div>
+        <div id="up-btn" class="game-btn" onclick="up()"></div>
     </div>
         <div class="btn-row middle">
-            <div id="left-btn" class="game-btn"></div>
-            <div id="right-btn" class="game-btn"></div>
+            <div id="left-btn" class="game-btn" onclick="left()"></div>
+            <div id="right-btn" class="game-btn" onclick="right()"></div>
         </div>
         <div class="btn-row">
-        <div id="down-btn" class="game-btn"></div>
+        <div id="down-btn" class="game-btn" onclick="down()"></div>
     </div>
     </div>
 </body>

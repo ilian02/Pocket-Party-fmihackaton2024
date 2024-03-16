@@ -3,10 +3,6 @@ body{
     background-image: url("../static/console-background.png");
 }
 @media (min-width:480px)  { 
-<<<<<<< HEAD
-=======
-
->>>>>>> fb38fe460cdb7f8d19d569605b16e819a9a92932
     #game-buttons {
         align-items: center;
         margin: 5%;
@@ -78,7 +74,7 @@ body{
     }
 }
 
-.main-btn-style {
+.leave-btn {
     position: relative;
     height: 50px;
     padding: 0 30px;
@@ -91,28 +87,28 @@ body{
     color:#ffffff;
    }
    
-   .main-btn-style:before, .main-btn-style:after {
+   .leave-btn:before, .leave-btn:after {
     content: "";
     position: absolute;
     background: #000000;
     transition: all .2s linear;
    }
    
-   .main-btn-style:before {
+   .leave-btn:before {
     width: calc(100% + 6px);
     height: calc(100% - 16px);
     top: 8px;
     left: -3px;
    }
    
-   .main-btn-style:after {
+   .leave-btn:after {
     width: calc(100% - 16px);
     height: calc(100% + 6px);
     top: -3px;
     left: 8px;
    }
    
-   .main-btn-style:hover {
+   .leave-btn:hover {
     cursor: crosshair;
     color:#cb3838;
     border: 2px solid #cb3838;
@@ -123,27 +119,74 @@ body{
     border: 2px solid #ffffff;
    }
 
-   .main-btn-style:active {
+   .leave-btn:active {
     transform: scale(0.95);
     color:#cb3838;
     border: 2px solid #cb3838;
    }
    
-   .main-btn-style:hover:before {
+   .leave-btn:hover:before {
     height: calc(100% - 32px);
     top: 16px;
     
    }
    
-   .main-btn-style:hover:after {
+   .leave-btn:hover:after {
     width: calc(100% - 32px);
     left: 16px;
     
    }
    
-   .main-btn-style span {
+   .leave-btn span {
     font-size: 15px;
     z-index: 3;
     position: relative;
     font-weight: 600;
    }
+
+   /* buttons for the lobby */
+
+   .lobby-btn {
+    font-size: 18px;
+    color: #e1e1e1;
+    font-family: inherit;
+    font-weight: 800;
+    cursor: pointer;
+    position: relative;
+    border: none;
+    background: none;
+    text-transform: uppercase;
+    transition-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
+    transition-duration: 400ms;
+    transition-property: color;
+    margin-bottom: 5px;
+  }
+  
+  .lobby-btn:focus,
+  .lobby-btn:hover, .lobby-btn:focus:active {
+    color: #4964d1;
+  }
+  
+  .lobby-btn:focus:after,
+  .lobby-btn:hover:after, .lobby-btn:focus:hover:active {
+    width: 100%;
+    left: 0%;
+  }
+  
+  .lobby-btn:after {
+    content: "";
+    pointer-events: none;
+    bottom: -2px;
+    left: 50%;
+    position: absolute;
+    width: 0%;
+    height: 2px;
+    background-color: #fff;
+    transition-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
+    transition-duration: 400ms;
+    transition-property: width, left;
+  }
+
+  .create-lobby {
+    margin: 10px;
+  }
