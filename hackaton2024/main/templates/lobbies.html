@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lobby Page</title>
+</head>
+<body>
+    <h1>Lobbies</h1>
+    <ul>
+        {% for lobby in lobbies %}
+            <li>
+                {{ lobby.name }}
+                <form action="join_lobby" method="post" style="display: inline;">
+                    {% csrf_token %}
+                    <input type="hidden" name="lobby_id" value="{{ lobby.id }}">
+                    <button type="submit">Join Lobby</button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
