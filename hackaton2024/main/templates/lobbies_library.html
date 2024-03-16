@@ -1,0 +1,31 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lobbies</title>
+  <link rel="stylesheet" href="{% static 'styles_landing.css'%}">
+  <link rel="stylesheet" href="{% static 'buttons.css'%}">
+</head>
+<body>
+  <div class="container">
+    {% for lobby in lobbies  %}
+    <li>
+        <form action="join_lobby" method="post" style="display: inline;">
+            {% csrf_token %}
+            <input type="hidden" name="lobby_id" value="{{ lobby }}">
+            <button type="submit">Join Lobby {{ lobby }} </button>
+        </form>
+    </li>
+    {% endfor %}
+
+    <form action="create_lobby" method="post">
+        {% csrf_token %}
+        <button type="submit">Create new lobby</button>
+    </form>
+  </div>
+
+</body>
+</html>

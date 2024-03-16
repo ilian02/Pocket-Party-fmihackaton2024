@@ -11,15 +11,16 @@ def index(request):
 def lobbies(request):
     # lobbies = [lobby('Lobby A', 1), Lobby('Lobby B', 2), Lobby('Lobby C', 3)]
     lobbies = lobby_manager.get_current_lobbies()
-    return render(request, 'lobbies.html', {'lobbies': lobbies})
+    return render(request, 'lobbies_library.html', {'lobbies': lobbies})
 
 def join_lobby(request):
-    print(request.POST.get('lobby_id'))
+    # print(request.POST.get('lobby_id'))
     return render(request, 'controlers.html')
 
 def create_lobby(request):
+    print('creating')
     lobby_manager.create_lobby()
     lobbies = lobby_manager.get_current_lobbies()
     # print(lobbies)
-    return render(request, 'lobbies.html', {'lobbies': lobbies})
+    return render(request, 'lobbies_library.html', {'lobbies': lobbies})
     

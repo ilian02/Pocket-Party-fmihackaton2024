@@ -39,25 +39,20 @@ class SpaceshipGame {
                 deleteIndex.push(this.asteroids.indexOf(asteroid));
             }
             asteroid.draw(this.ctx);
-            
+            asteroid.rotation += asteroid.rotationSpeed;
             
             if (this.ship.collBox.collidesWith(asteroid.collBox)) {
                 console.log("collides");
-                console.log("Ship position:", this.ship.collBox.x, this.ship.collBox.y);
-                console.log("Asteroid position:", asteroid.collBox.x, asteroid.collBox.y);
+                deleteIndex.push(this.asteroids.indexOf(asteroid));
             }
 
 
             //this.ship.collBox.collidesWith(asteroid.collBox);
         }
-        for (let index of deleteIndex) {
+        console.log(this.asteroids.length);
+        for (let index of deleteIndex.reverse()) {
             this.asteroids.splice(index, 1);
         }
-
-        
-
-
-        
     }
     
     start() {
@@ -86,7 +81,7 @@ class SpaceshipGame {
         if(n < 0)
             return asteroids;
         for(let i=0; i<n; i++) {
-            asteroids.push(new Asteroid(new CollisionBox(1800, getRandomInt(1080),0,0), getRandomAsteroidURL(), 
+            asteroids.push(new Asteroid(new CollisionBox(2000, getRandomInt(1080 + 480) - 200,0,0), getRandomAsteroidURL(), 
                             getRandomInt(4,8), getRandomSign() * getRandomInt(2,8)/2));
 
         }
@@ -121,8 +116,8 @@ class Ship {
         //console.log("img height" + this.collBox.height);
 
         ctx.drawImage(this.image, this.collBox.x, this.collBox.y, this.collBox.width, this.collBox.height);
-        ctx.fillStyle = "red";
-        ctx.fillRect(this.collBox.x, this.collBox.y, this.collBox.width, this.collBox.height);
+        //ctx.fillStyle = "red";
+        //ctx.fillRect(this.collBox.x, this.collBox.y, this.collBox.width, this.collBox.height);
         //drawing over the coll box using its topleft cords
 
     }
@@ -135,6 +130,8 @@ class Asteroid {
         this.image.src = imageURL;
         this.dx = dx;
         this.dy = dy;
+        this.rotation = 0;
+        this.rotationSpeed = getRandomSign()*0.01;
         
         this.image.onload = () => {
             this.collBox.width = this.image.naturalWidth;
@@ -149,10 +146,16 @@ class Asteroid {
         //console.log("aster widht" + this.collBox.width);
         //console.log("aster height" + this.collBox.height);
 
-        ctx.drawImage(this.image, this.collBox.x, this.collBox.y);
+        //ctx.drawImage(this.image, this.collBox.x, this.collBox.y);
+
+        ctx.save();  // Save context state for later restoration
+        ctx.translate(this.collBox.x + this.collBox.width / 2, this.collBox.y + this.collBox.height / 2);  // Translate to center
+        ctx.rotate(this.rotation);  // Apply rotation
+        ctx.drawImage(this.image, -this.collBox.width / 2, -this.collBox.height / 2);  // Draw image centered
+        ctx.restore();  // Restore context state`
         
-        ctx.fillStyle = "red";
-        ctx.fillRect(this.collBox.x, this.collBox.y, this.collBox.width, this.collBox.height);
+
+
 
         this.collBox.x -= this.dx;
         this.collBox.y += this.dy;
@@ -160,8 +163,8 @@ class Asteroid {
 
     removeCondition() {
         return (this.collBox.x + this.collBox.width < 0 || 
-                this.collBox.y + this.collBox.height < 0 || 
-                this.collBox.y - this.collBox.height > CANVAS_HEIGHT)     
+                this.collBox.y + this.collBox.height + 400 < 0 || 
+                this.collBox.y - this.collBox.height - 400 > CANVAS_HEIGHT)     
     }
 
 
@@ -200,4 +203,5 @@ function getRandomInt(max) {
 function getRandomSign() {
     return Math.random() < 0.5 ? -1 : 1;
 }
+
 
