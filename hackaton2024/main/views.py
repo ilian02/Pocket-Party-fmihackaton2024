@@ -19,7 +19,7 @@ def join_lobby(request):
     user_id = random.randint(10000, 1000000)
     print(user_id)
     print(request.POST.get('lobby_id'))
-    return render(request, 'controlers.html', {'user_id': user_id})
+    return render(request, 'controlers.html', {'user_id': user_id, 'lobby_id': request.POST.get('lobby_id')})
 
 def create_lobby(request):
     print('creating')
@@ -27,4 +27,15 @@ def create_lobby(request):
     lobbies = lobby_manager.get_current_lobbies()
     # print(lobbies)
     return render(request, 'lobbies_library.html', {'lobbies': lobbies})
+
+def leave_lobby(request):
+    print("leaving the lobby")
+    print(request.POST.get('user_id'))
+    print(request.POST.get('lobby_id'))
+
+    # Remove the player from the 
+    lobbies = lobby_manager.get_current_lobbies()
+    return render(request, 'lobbies_library.html', {'lobbies': lobbies})
+
+
     
