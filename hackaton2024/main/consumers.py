@@ -5,6 +5,10 @@ class ControllerConsumer(WebsocketConsumer):
     
     def connect(self):
         self.accept()
+
+        self.user = self.scope["user"]
+        print(self.user)
+
         self.send(text_data=json.dumps({
             'type':'connection_establieshed',
             'message': 'you are now connected!'

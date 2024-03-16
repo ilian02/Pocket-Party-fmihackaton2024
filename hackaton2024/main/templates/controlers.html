@@ -1,12 +1,19 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'buttons.css'%}" /> 
     <title>Lobby Page</title>
 </head>
-<body>
-    <h1>Controls page</h1>
 
-    <button onclick="clicked()">click me</button>
+<body>
+    <button class="leave-btn" onclick="leaveLobby()">
+        <span>Leave lobby</span>
+    </button>
+
     <script type="text/javascript">
         let url = `ws://${window.location.host}/ws/socket-server/`
         const controlSocket = new WebSocket(url)
@@ -15,10 +22,25 @@
             console.log("data: ", data)
         }
 
-        function clicked() {
+        function leaveLobby() {
             console.log('clicked')
             controlSocket.send(JSON.stringify({'message': 'I was clicked'}))
         }
+
+        
     </script>
+
+    <div id="game-buttons">
+        <div class="btn-row ">
+        <div id="up-btn" class="game-btn"></div>
+    </div>
+        <div class="btn-row middle">
+            <div id="left-btn" class="game-btn"></div>
+            <div id="right-btn" class="game-btn"></div>
+        </div>
+        <div class="btn-row">
+        <div id="down-btn" class="game-btn"></div>
+    </div>
+    </div>
 </body>
 </html>
