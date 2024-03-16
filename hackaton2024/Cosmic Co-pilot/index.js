@@ -12,30 +12,42 @@ class SpaceshipGame {
         this.backgroundImage = new Image();
         this.backgroundImage.src = "./assets/backgrounds/im3.png";
 
-        this.ship = new Ship(new CollisionBox(100, 100, SHIP_WIDTH, SHIP_HEIGHT), "./assets/testship.png");
+        this.ship = new Ship(new CollisionBox(200, 500, SHIP_WIDTH, SHIP_HEIGHT), "./assets/testship.png");
         this.asteroids = [];
     }
   
     update() {
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
         this.ctx.drawImage(this.backgroundImage, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-        this.moveShip(this.ship.collBox.x + 1, this.ship.collBox.y +1);
+        this.moveShip(this.ship.collBox.x, this.ship.collBox.y);
         this.ship.draw(this.ctx);
         if (getRandomInt(100) <= 10) {
             for(let asteroid of this.createAsteroids()){
-                console.log("adding aster");
                 this.asteroids.push(asteroid);
             }
-            console.log(this.asteroids.length);
-
             
         }
+        let deleteIndex = []
         for (let asteroid of this.asteroids) {
+
             console.log(this.asteroids.length)
+            if (asteroid.removeCondition()) {
+                deleteIndex.push(this.asteroids.indexOf(asteroid));
+            }
             asteroid.draw(this.ctx);
+
+            if (this.ship.collBox.collidesWith(asteroid.collBox)) {
+                console.log("collides");
+            }
+
+
             //this.ship.collBox.collidesWith(asteroid.collBox);
         }
-        
+        for (let index of deleteIndex) {
+            this.asteroids.splice(index, 1);
+        }
+
+
 
         
     }
@@ -73,10 +85,6 @@ class SpaceshipGame {
         return asteroids;
     }
 
-    setTimer()
-    {
-        
-    }
     
 }
   
@@ -119,10 +127,15 @@ class Asteroid {
 
 
     }
+
     draw(ctx) {
         ctx.drawImage(this.image, this.collBox.x, this.collBox.y);
         this.collBox.x -= this.dx;
         this.collBox.y += this.dy;
+    }
+
+    removeCondition() {
+        return (this.collBox.x + this.collBox.width < 0 || this.collBox.y + this.collBox.height < 0 || this.collBox.y - this.collBox.height > CANVAS_HEIGHT)     
     }
 
 
@@ -136,15 +149,23 @@ class CollisionBox {
         this.y = y; 
         this.width = width;
         this.height = height;
+        this.centerx = (this.x + this.width) / 2;
+        this.centery = (this.y + this.height) / 2;
+
     }
 
 
-    collidesWith(otherBox) {
+    collidesWith(other) {
         return (
-            this.x < otherBox.x + otherBox.width &&
-            this.x + this.width > otherBox.x &&
-            this.y < otherBox.y + otherBox.height &&
-            this.y + this.height > otherBox.y
+        //     this.x < otherBox.x + otherBox.width &&
+        //     this.x + this.width > otherBox.x &&
+        //     this.y < otherBox.y + otherBox.height &&
+        //     this.y + this.height > otherBox.y
+        // );
+            this.x < other.x + other.width &&
+            other.x < this.x + this.width &&
+            this.y < other.y + other.height &&
+            other.y < this.y + this.height
         );
     }
 }
