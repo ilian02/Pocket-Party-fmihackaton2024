@@ -3,7 +3,10 @@ body{
     background-image: url("../static/console-background.png");
 }
 @media (min-width:480px)  { 
+<<<<<<< HEAD
+=======
 
+>>>>>>> fb38fe460cdb7f8d19d569605b16e819a9a92932
     #game-buttons {
         align-items: center;
         margin: 5%;
@@ -17,7 +20,7 @@ body{
         border-right: 60px solid transparent;
         border-bottom: 50px solid #555;
     }
-    #up-btn:active{
+    #up-btn:active, #up-btn:hover {
         border-bottom: 50px solid #cb3838;
     }
     #down-btn {
@@ -28,7 +31,7 @@ body{
         border-right: 60px solid transparent;
         border-top: 50px solid #2a9297;
     }
-    #down-btn:active{
+    #down-btn:active, #down-btn:hover{
         border-top: 50px solid #cb3838;
     }
     
@@ -40,7 +43,7 @@ body{
         border-bottom: 27px solid transparent;
     }
 
-    #left-btn:active{
+    #left-btn:active, #left-btn:hover{
         border-right: 90px solid #cb3838;
     }
 
@@ -52,7 +55,7 @@ body{
         border-bottom: 27px solid transparent;
     }
 
-    #right-btn:active{
+    #right-btn:active, #right-btn:hover{
         border-left: 90px solid #cb3838;
     }
 
@@ -64,10 +67,18 @@ body{
 
     .game-btn {
         margin: 0 auto;
+        filter: drop-shadow(7px 5px 5px #2c2c31); 
+        transform: translate(0px, 0px) rotate(0deg);
+        transition: 0.2s;
+        /* box-shadow: -4px -2px 16px 0px #ffffff, 4px 2px 16px 0px rgb(95 157 231 / 48%); */
+        transition: all 0.2s ease-in-out;
+    }
+    .game-btn:hover{
+        filter: drop-shadow(10px 5px 5px #542b25); 
     }
 }
 
-.leave-btn {
+.main-btn-style {
     position: relative;
     height: 50px;
     padding: 0 30px;
@@ -80,52 +91,57 @@ body{
     color:#ffffff;
    }
    
-   .leave-btn:before, .leave-btn:after {
+   .main-btn-style:before, .main-btn-style:after {
     content: "";
     position: absolute;
     background: #000000;
     transition: all .2s linear;
    }
    
-   .leave-btn:before {
+   .main-btn-style:before {
     width: calc(100% + 6px);
     height: calc(100% - 16px);
     top: 8px;
     left: -3px;
    }
    
-   .leave-btn:after {
+   .main-btn-style:after {
     width: calc(100% - 16px);
     height: calc(100% + 6px);
     top: -3px;
     left: 8px;
    }
    
-   .leave-btn:hover {
+   .main-btn-style:hover {
     cursor: crosshair;
-    color:#960707;
-    border: 2px solid #960707;
+    color:#cb3838;
+    border: 2px solid #cb3838;
    }
    
-   .leave-btn:active {
+   .main-btn:hover, .main-btn:active { 
+    color:#ffffff;
+    border: 2px solid #ffffff;
+   }
+
+   .main-btn-style:active {
     transform: scale(0.95);
-    color:#960707;
-    border: 2px solid #960707;
+    color:#cb3838;
+    border: 2px solid #cb3838;
    }
    
-   .leave-btn:hover:before {
+   .main-btn-style:hover:before {
     height: calc(100% - 32px);
     top: 16px;
     
    }
    
-   .leave-btn:hover:after {
+   .main-btn-style:hover:after {
     width: calc(100% - 32px);
     left: 16px;
     
    }
    
-   .leave-btn span {
+   .main-btn-style span {
     font-size: 15px;
     z-index: 3;
     position: relative;
