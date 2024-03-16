@@ -16,6 +16,11 @@
                 </form>
             </li>
         {% endfor %}
+
+        <form action="create_lobby" method="post" style="display: inline;">
+            {% csrf_token %}
+            <button type="submit">Create Lobby</button>
+        </form>
     </ul>
 </body>
 </html>
