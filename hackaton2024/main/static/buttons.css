@@ -1,8 +1,8 @@
+body{
+    justify-content: center;
+    background-image: url("../static/console-background.png");
+}
 @media (min-width:480px)  { 
-    body{
-        justify-content: center;
-        background-image: url("../static/console-background.png");
-    }
 
     #game-buttons {
         align-items: center;
