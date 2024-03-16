@@ -5,6 +5,8 @@ from .lobby_manager import lobbyManager
 
 lobby_manager = lobbyManager()
 
+def index(request):
+    return render(request, 'index.html')
 
 def lobbies(request):
     # lobbies = [lobby('Lobby A', 1), Lobby('Lobby B', 2), Lobby('Lobby C', 3)]

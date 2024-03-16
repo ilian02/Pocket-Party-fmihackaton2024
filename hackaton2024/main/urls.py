@@ -1,8 +1,9 @@
 from django.urls import path
-from .views import lobbies, join_lobby, create_lobby
+from .views import lobbies, join_lobby, create_lobby, index
 
 urlpatterns = [
-    path('', lobbies),
+    path('', index),
+    path('lobbies', lobbies),
     path('join_lobby', join_lobby),
     path('create_lobby', create_lobby)
 ] 
