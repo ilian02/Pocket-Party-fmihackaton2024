@@ -3,7 +3,7 @@ body {
     text-align: center;
 }
 
-#board {
+#canvas {
     background-image: url("./assets/im2.png");
 
 }
