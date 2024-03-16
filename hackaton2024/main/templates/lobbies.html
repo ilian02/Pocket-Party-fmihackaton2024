@@ -1,28 +1,42 @@
+<<<<<<< HEAD
 {% load static %}
+=======
+
+>>>>>>> fb38fe460cdb7f8d19d569605b16e819a9a92932
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+<<<<<<< HEAD
     <link rel="stylesheet" href="{% static 'buttons.css'%}" /> 
     <link rel="stylesheet" href="{% static 'main-style.css'%}" /> 
     <title>Lobby Page</title>
+=======
+    {% load static %}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NoName</title>
+  <link rel="stylesheet" href="{% static 'styles_landing.css'%}">
+  <link rel="stylesheet" href="{% static 'buttons.css'%}">
+>>>>>>> fb38fe460cdb7f8d19d569605b16e819a9a92932
 </head>
 <body>
-    <h1>Lobbies</h1>
-    <ul>
-        {% for lobby in lobbies %}
-            <li>
-                <form action="join_lobby" method="post" style="display: inline;">
-                    {% csrf_token %}
-                    <input type="hidden" name="lobby_id" value="{{ lobby.id }}">
-                    <button type="submit">Join Lobby {{ lobby.id }} </button>
-                </form>
-            </li>
-        {% endfor %}
+  <div class="container">
+    <h1>Code/link you have joined with: </h1>
+    <label>text </label>
+    <h2>Players in session: </h2>
+    <label>text </label>
+    <h2> </h2>
+    <button type="submit">Begin</button>
+    
+  </div>
 
+<<<<<<< HEAD
         <form action="create_lobby" method="post" style="display: inline;">
             {% csrf_token %}
             <button class="leave-btn main-btn" type="submit"><span>Create Lobby</span></button>
         </form>
     </ul>
+=======
+>>>>>>> fb38fe460cdb7f8d19d569605b16e819a9a92932
 </body>
 </html>

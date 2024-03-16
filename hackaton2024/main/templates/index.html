@@ -1,1 +1,22 @@
-<h1>this is the index page</h1>
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NoName</title>
+  <link rel="stylesheet" href="{% static 'styles_landing.css'%}">
+</head>
+<body>
+  <div class="container">
+    <h1>NoName</h1>
+    <h2>Join game</h2>
+    <input type="text" id='' name="to_lobby" placeholder="Enter game link or code">
+    <h3>or host a new game</h3>
+    <button type="submit">Request link</button>
+    <button type="submit">Request code</button>
+    
+  </div>
+
+</body>
+</html>

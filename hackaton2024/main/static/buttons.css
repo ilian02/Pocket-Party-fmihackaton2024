@@ -3,6 +3,10 @@ body{
     background-image: url("../static/console-background.png");
 }
 @media (min-width:480px)  { 
+<<<<<<< HEAD
+=======
+
+>>>>>>> fb38fe460cdb7f8d19d569605b16e819a9a92932
     #game-buttons {
         align-items: center;
         margin: 5%;

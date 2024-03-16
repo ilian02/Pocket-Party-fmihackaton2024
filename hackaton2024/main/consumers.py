@@ -7,7 +7,7 @@ class ControllerConsumer(WebsocketConsumer):
         self.accept()
 
         self.user = self.scope["user"]
-        print(self.user)
+        # print(self.user)
 
         self.send(text_data=json.dumps({
             'type':'connection_establieshed',
@@ -18,8 +18,8 @@ class ControllerConsumer(WebsocketConsumer):
         return super().disconnect(code)
     
     def receive(self, text_data=None, bytes_data=None):
-        print(text_data)
-        print(bytes_data)
+        # print(text_data)
+        # print(bytes_data)
         text_data_json = json.loads(text_data)
         message = text_data_json['message']
         print(message)
