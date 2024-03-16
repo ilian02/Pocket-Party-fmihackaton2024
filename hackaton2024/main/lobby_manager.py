@@ -9,8 +9,6 @@ class lobbyManager:
         current_lobbies = self.get_current_lobbies()
         current_lobbies[new_lobby.id] = new_lobby.to_json()
 
-        print(current_lobbies)
-
         with open('./main/db.json', 'w') as f:
             json.dump(current_lobbies, f)
 
