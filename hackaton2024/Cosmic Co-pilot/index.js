@@ -16,6 +16,7 @@ class SpaceshipGame {
         this.ship = new Ship(new CollisionBox(200, 500, 10, 10), "./assets/Ship6/Ship6.png");
         
         
+        
 
         this.ship.collBox.collidesWith(this.ship.collBox)
         this.asteroids = [];
@@ -28,8 +29,32 @@ class SpaceshipGame {
         this.moveShip(this.ship.collBox.x, this.ship.collBox.y);
         this.ship.draw(this.ctx);
 
-        //this.projectiles.push(this.createProjectile(this.ship.collBox));
-        
+        if (getRandomInt(100) <= 10) {
+            for(let asteroid of this.createAsteroids()){
+                this.projectiles.push(this.createProjectile(this.ship.collBox));
+            }
+        }
+
+        let deleteProjectilesIndexes = []
+        for (let projecile of this.projectiles) {
+
+            //console.log(asteroid.collBox.r);
+            if (projecile.removeCondition()) {
+                deleteProjectilesIndexes.push(this.projectiles.indexOf(projectile));
+            }
+            projecile.draw(this.ctx);
+            
+            //if (this.ship.collBox.collidesWith(asteroid.collBox)) {
+                //console.log("collides");
+                //deleteAsteroidsIndexes.push(this.asteroids.indexOf(asteroid));
+            //}
+        }
+
+
+
+
+
+        console.log(this.projectiles.length)
 
 
         if (getRandomInt(100) <= 10) {
@@ -53,11 +78,8 @@ class SpaceshipGame {
                 console.log("collides");
                 deleteAsteroidsIndexes.push(this.asteroids.indexOf(asteroid));
             }
-
-
-            //this.ship.collBox.collidesWith(asteroid.collBox);
         }
-        console.log(this.asteroids.length);
+        //console.log(this.asteroids.length);
         for (let index of deleteAsteroidsIndexes.reverse()) {
             this.asteroids.splice(index, 1);
         }
@@ -222,26 +244,29 @@ class Projectile {
         this.collBox = collBox;  //CollisionBox(100, 100, settings.SHIP_WIDTH, settings.SHIP_HEIGHT);
         this.images = [];
         for (let i = 0; i < 4 ; i++) {
-            this.images = new Image();
-            this.images.src = imageURLS[i];
+            this.images[i] = new Image();
+            this.images[i].src = this.imageURLS[i];
         }
         this.counter = 0;
 
 
-        this.images[0].onload = () => {
-            this.collBox.width = this.images[0].naturalWidth;
-            this.collBox.height = this.images[0].naturalHeight;
+        this.images[1].onload = () => {
+            this.collBox.width = this.images[1].naturalWidth;
+            this.collBox.height = this.images[1].naturalHeight;
         }
         
     }
     draw(ctx) {
-        ctx.drawImage(this.images[counter % 4], this.collBox.x, this.collBox.y, this.collBox.width, this.collBox.height);
-        counter += 1;
+        ctx.drawImage(this.images[this.counter % 4], this.collBox.x, this.collBox.y, this.collBox.width, this.collBox.height);
+        this.counter += 1;
 
         //ctx.fillStyle = "red";
         //ctx.fillRect(this.collBox.x, this.collBox.y, this.collBox.width, this.collBox.height);
         //drawing over the coll box using its topleft cords
-        
+        this.collBox.x += 1;
+    }
+    removeCondition() {
+        return (this.collBox.x > 2000);
     }
 
 
