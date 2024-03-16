@@ -91,7 +91,7 @@ class SpaceshipGame {
         if(n < 0)
             return asteroids;
         for(let i=0; i<n; i++) {
-            asteroids.push(new Asteroid(new CollisionBox(2000, getRandomInt(1080 + 480) - 200,0,0), getRandomAsteroidURL(), 
+            asteroids.push(new Asteroid(new CollisionBox(1800, getRandomInt(1080),0,0), getRandomAsteroidURL(), 
                             getRandomInt(4,8), getRandomSign() * getRandomInt(2,8)/2));
 
         }
@@ -126,8 +126,8 @@ class Ship {
         //console.log("img height" + this.collBox.height);
 
         ctx.drawImage(this.image, this.collBox.x, this.collBox.y, this.collBox.width, this.collBox.height);
-        ctx.fillStyle = "red";
-        ctx.fillRect(this.collBox.x, this.collBox.y, this.collBox.width, this.collBox.height);
+        //ctx.fillStyle = "red";
+        //ctx.fillRect(this.collBox.x, this.collBox.y, this.collBox.width, this.collBox.height);
         //drawing over the coll box using its topleft cords
 
     }
@@ -141,7 +141,7 @@ class Asteroid {
         this.dx = dx;
         this.dy = dy;
         this.rotation = 0;
-        this.rotationSpeed = getRandomSign()*0.01;
+        this.rotationSpeed = 0.01;
         
         this.image.onload = () => {
             this.collBox.width = this.image.naturalWidth;
@@ -165,7 +165,10 @@ class Asteroid {
         ctx.restore();  // Restore context state`
         
 
+        //ctx.fillStyle = "red";
+        //ctx.fillRect(this.collBox.x, this.collBox.y, this.collBox.width, this.collBox.height);
 
+        //drawing over the coll box using its topleft cords
 
         this.collBox.x -= this.dx;
         this.collBox.y += this.dy;
@@ -173,8 +176,8 @@ class Asteroid {
 
     removeCondition() {
         return (this.collBox.x + this.collBox.width < 0 || 
-                this.collBox.y + this.collBox.height + 400 < 0 || 
-                this.collBox.y - this.collBox.height - 400 > CANVAS_HEIGHT)     
+                this.collBox.y + this.collBox.height < 0 || 
+                this.collBox.y - this.collBox.height > CANVAS_HEIGHT)     
     }
 
 
@@ -199,6 +202,35 @@ class CollisionBox {
     }
 }
 
+class Projectile {
+    constructor (collBox, imageURLS) {
+        this.collBox = collBox;  //CollisionBox(100, 100, settings.SHIP_WIDTH, settings.SHIP_HEIGHT);
+        this.images = [];
+        for (let i = 0; i < 4 ; i++) {
+            this.images = new Image();
+            this.images.src = imageURLS[i];
+        }
+        this.counter = 0;
+
+
+        this.images[0].onload = () => {
+            this.collBox.width = this.images[0].naturalWidth;
+            this.collBox.height = this.images[0].naturalHeight;
+        }
+        
+    }
+    draw(ctx) {
+        ctx.drawImage(this.images[counter % 4], this.collBox.x, this.collBox.y, this.collBox.width, this.collBox.height);
+        counter += 1;
+        
+        //ctx.fillStyle = "red";
+        //ctx.fillRect(this.collBox.x, this.collBox.y, this.collBox.width, this.collBox.height);
+        //drawing over the coll box using its topleft cords
+        
+    }
+
+
+}
 
 
 function getRandomAsteroidURL() {
