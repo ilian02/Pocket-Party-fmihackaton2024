@@ -23,6 +23,6 @@ class lobbyManager:
         with open('./main/db.json') as f:
             lobbies = json.load(f)
 
-        print(lobbies)
+        # print(lobbies)
             
         return lobbies
