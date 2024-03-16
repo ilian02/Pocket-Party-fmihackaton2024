@@ -8,7 +8,23 @@ body {
     background-repeat: no-repeat;
     height: 100vh; /* Ensure full viewport height */
   }
+
+  h1, h2, h3, h4 {
+    text-align: center; 
+    color: #fff; 
+    font-size: 2em; /* Adjust font size as needed */
+    text-shadow: 2px 2px 0 #FF8C00; 
+  }
   
+  h1 {
+    font-size: 7em; 
+    margin-top: 17vh; 
+  }
+  
+  h2 {
+    font-size: 4em; 
+  }
+
   .container {
     padding: 20px; /* Add padding or margin as needed */
   }
