@@ -10,50 +10,76 @@ class SpaceshipGame {
         this.ctx = this.canvas.getContext('2d');
 
         this.backgroundImage = new Image();
-        this.backgroundImage.src = "./assets/im2.png";
+        this.backgroundImage.src = "./assets/backgrounds/im3.png";
 
         this.ship = new Ship(new CollisionBox(100, 100, SHIP_WIDTH, SHIP_HEIGHT), "./assets/testship.png");
-        this.asteroid = new Asteroid(new CollisionBox(100, 100, SHIP_WIDTH, SHIP_HEIGHT))
+        this.asteroids = [];
     }
   
-    // Function to draw the background and update visuals
     update() {
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
         this.ctx.drawImage(this.backgroundImage, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-        this.moveShip(this.ship.collBox.x + 1, this.ship.collBox.y + 1);
-        this.ship.draw(this.ctx); // Delegate drawing to the Ship class
-        this.asteroid.draw(this.ctx);
+        this.moveShip(this.ship.collBox.x + 1, this.ship.collBox.y +1);
+        this.ship.draw(this.ctx);
+        if (getRandomInt(100) <= 10) {
+            for(let asteroid of this.createAsteroids()){
+                console.log("adding aster");
+                this.asteroids.push(asteroid);
+            }
+            console.log(this.asteroids.length);
+
+            
+        }
+        for (let asteroid of this.asteroids) {
+            console.log(this.asteroids.length)
+            asteroid.draw(this.ctx);
+            //this.ship.collBox.collidesWith(asteroid.collBox);
+        }
+        
+
+        
     }
     
-    // Function to start the game loop
     start() {
         this.intervalId = setInterval(this.update.bind(this), 1000 / 60);
         window.addEventListener('keydown', this.moveShip); // Add event listener for keydown
     }
   
-    // Function to stop the game loop
     stop() {
         clearInterval(this.intervalId);
         //window.removeEventListener('keydown', this.handleKeyDown); // Remove event listener for keydown
     }
   
-    // Function to restart the game
     restart() {
         this.stop();
         this.start();
     }
 
-    // Function to handle key presses (placeholder for now)
     moveShip(x, y) {
         this.ship.collBox.x = x;
         this.ship.collBox.y = y;
     }
 
+    createAsteroids() {
+        let n = getRandomInt(10) - 8;
+        let asteroids = []
+        if(n < 0)
+            return asteroids;
+        for(let i=0; i<n; i++) {
+            asteroids.push(new Asteroid(new CollisionBox(1800, getRandomInt(1080),0,0), getRandomAsteroidURL(), 
+                            getRandomInt(4,8), getRandomSign() * getRandomInt(2,8)/2));
 
+        }
+        return asteroids;
+    }
+
+    setTimer()
+    {
+        
+    }
     
 }
   
-  // Start the game on window load
 window.onload = function() {
     const game = new SpaceshipGame('canvas', '#FF0000');
     game.start();
@@ -68,9 +94,15 @@ class Ship {
         this.image.src = imageURL;
         this.image.width = collBox.width;
         this.image.height = collBox.height;
+
+        //this.collBox.width = this.image.width;
+        //this.collBox.height = this.image.height;
+
     }
     draw(ctx) {
         ctx.drawImage(this.image, this.collBox.x, this.collBox.y, this.collBox.width, this.collBox.height);
+        //drawing over the coll box using its topleft cords
+
     }
 }
 
@@ -81,10 +113,16 @@ class Asteroid {
         this.image.src = imageURL;
         this.dx = dx;
         this.dy = dy;
+
+        this.collBox.width = this.image.width;
+        this.collBox.height = this.image.height;
+
+
     }
     draw(ctx) {
-        ctx.drawImage(this.image, this.collBox.x, this.collBox.y, this.collBox.width, this.collBox.height);
-        console.log(getRandomAsteroidURL());
+        ctx.drawImage(this.image, this.collBox.x, this.collBox.y);
+        this.collBox.x -= this.dx;
+        this.collBox.y += this.dy;
     }
 
 
@@ -94,13 +132,13 @@ class Asteroid {
 
 class CollisionBox {
     constructor(x, y, width, height) {
-        this.x = x; // X-coordinate of the top-left corner
-        this.y = y; // Y-coordinate of the top-left corner
-        this.width = width; // Width of the box
-        this.height = height; // Height of the box
+        this.x = x;
+        this.y = y; 
+        this.width = width;
+        this.height = height;
     }
 
-    // Check if this box collides with another box
+
     collidesWith(otherBox) {
         return (
             this.x < otherBox.x + otherBox.width &&
@@ -113,10 +151,15 @@ class CollisionBox {
 
 
 function getRandomAsteroidURL() {
-    let asteroidNumber = getRandomInt(17) + 1;
+    let asteroidNumber = getRandomInt(16) + 1;
     return "./assets/comets/Picture" + asteroidNumber + ".png";
 }
 
 function getRandomInt(max) {
-    return Math.floor(Math.random() * max);
-  }
+    return Math.floor(Math.random() * max) + 1;
+}
+
+function getRandomSign() {
+    return Math.random() < 0.5 ? -1 : 1;
+}
+
