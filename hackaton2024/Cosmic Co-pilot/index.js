@@ -49,7 +49,8 @@ class SpaceshipGame {
 
             //this.ship.collBox.collidesWith(asteroid.collBox);
         }
-        for (let index of deleteIndex) {
+        console.log(this.asteroids.length);
+        for (let index of deleteIndex.reverse()) {
             this.asteroids.splice(index, 1);
         }
 
