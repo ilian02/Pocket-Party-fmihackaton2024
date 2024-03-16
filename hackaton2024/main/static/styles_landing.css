@@ -25,6 +25,115 @@ body {
     font-size: 4em; 
   }
 
+  /* for the input tag */
+  input[type="text"] {
+    width: 40%; 
+    padding: 13px;
+    border: none;
+    border-radius: 5px;
+    font-size: 25px;
+    color: #fff; 
+    background-color: #03102c95; 
+    text-align: center; 
+    margin: 0 auto; /* Center horizontally */
+    display: block; /* Ensure block-level display */
+  }
+
+  /* placeholder text */
+  input[type="text"]::placeholder {
+    color: #999;
+  }
+
+  /* Hover effect */
+  input[type="text"]:hover {
+    border-color: #80c2f8;
+    
+  }
+
+  /* Focus effect */
+  input[type="text"]:focus {
+    outline: none;
+    border-color: #268dfc;
+    box-shadow: 0 0 12px rgba(0, 123, 255, 0.5);
+  }
+
+  .button-container {
+    display: flex;
+    justify-content: center;
+    gap: 80px; /* Adjust the space between buttons */
+    margin-top: 6vh;
+  }
+
+  .request-btn {
+    position: relative;
+    height: 50px;
+    padding: 0 30px;
+    border: 3px solid #ffffff;
+    background: #03102c;
+    user-select: none;
+    white-space: nowrap;
+    transition: all .05s linear;
+    font-family: inherit;
+    color:#ffffff;
+   }
+   
+   .request-btn:before, .request-btn:after {
+    content: "";
+    position: absolute;
+    background: #03102c;
+    transition: all .2s linear;
+   }
+   
+   .request-btn:before {
+    width: calc(100% + 6px);
+    height: calc(100% - 16px);
+    top: 8px;
+    left: -3px;
+   }
+   
+   .request-btn:after {
+    width: calc(100% - 16px);
+    height: calc(100% + 6px);
+    top: -3px;
+    left: 8px;
+   }
+   
+   .request-btn:hover {
+    cursor: crosshair;
+    color:#cb3838;
+    border: 2px solid #cb3838;
+   }
+   
+   .request-btn:hover, .request-btn:active { 
+    color:#ffffff;
+    border: 2px solid #ffffff;
+   }
+
+   .request-btn:active {
+    transform: scale(0.95);
+    color:#cb3838;
+    border: 2px solid #cb3838;
+   }
+   
+   .request-btn:hover:before {
+    height: calc(100% - 32px);
+    top: 16px;
+    
+   }
+   
+   .request-btn:hover:after {
+    width: calc(100% - 32px);
+    left: 16px;
+    
+   }
+   
+   .request-btn span {
+    font-size: 15px;
+    z-index: 3;
+    position: relative;
+    font-weight: 600;
+   }
+
   .container {
     padding: 20px; /* Add padding or margin as needed */
   }
