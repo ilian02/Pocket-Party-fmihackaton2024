@@ -1,6 +1,9 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
+    <link rel="stylesheet" href="{% static 'buttons.css'%}" /> 
+    <link rel="stylesheet" href="{% static 'main-style.css'%}" /> 
     <title>Lobby Page</title>
 </head>
 <body>
@@ -18,7 +21,7 @@
 
         <form action="create_lobby" method="post" style="display: inline;">
             {% csrf_token %}
-            <button type="submit">Create Lobby</button>
+            <button class="leave-btn main-btn" type="submit"><span>Create Lobby</span></button>
         </form>
     </ul>
 </body>
