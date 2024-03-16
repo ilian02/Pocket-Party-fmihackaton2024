@@ -53,11 +53,6 @@ class SpaceshipGame {
         for (let index of deleteIndex.reverse()) {
             this.asteroids.splice(index, 1);
         }
-
-        
-
-
-        
     }
     
     start() {
