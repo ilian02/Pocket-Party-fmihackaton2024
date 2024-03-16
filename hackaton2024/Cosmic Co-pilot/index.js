@@ -39,12 +39,11 @@ class SpaceshipGame {
                 deleteIndex.push(this.asteroids.indexOf(asteroid));
             }
             asteroid.draw(this.ctx);
-            
+            asteroid.rotation += asteroid.rotationSpeed;
             
             if (this.ship.collBox.collidesWith(asteroid.collBox)) {
                 console.log("collides");
-                console.log("Ship position:", this.ship.collBox.x, this.ship.collBox.y);
-                console.log("Asteroid position:", asteroid.collBox.x, asteroid.collBox.y);
+                deleteIndex.push(this.asteroids.indexOf(asteroid));
             }
 
 
@@ -121,8 +120,8 @@ class Ship {
         //console.log("img height" + this.collBox.height);
 
         ctx.drawImage(this.image, this.collBox.x, this.collBox.y, this.collBox.width, this.collBox.height);
-        ctx.fillStyle = "red";
-        ctx.fillRect(this.collBox.x, this.collBox.y, this.collBox.width, this.collBox.height);
+        //ctx.fillStyle = "red";
+        //ctx.fillRect(this.collBox.x, this.collBox.y, this.collBox.width, this.collBox.height);
         //drawing over the coll box using its topleft cords
 
     }
@@ -135,6 +134,8 @@ class Asteroid {
         this.image.src = imageURL;
         this.dx = dx;
         this.dy = dy;
+        this.rotation = 0;
+        this.rotationSpeed = 0.01;
         
         this.image.onload = () => {
             this.collBox.width = this.image.naturalWidth;
@@ -149,10 +150,16 @@ class Asteroid {
         //console.log("aster widht" + this.collBox.width);
         //console.log("aster height" + this.collBox.height);
 
-        ctx.drawImage(this.image, this.collBox.x, this.collBox.y);
+        //ctx.drawImage(this.image, this.collBox.x, this.collBox.y);
+
+        ctx.save();  // Save context state for later restoration
+        ctx.translate(this.collBox.x + this.collBox.width / 2, this.collBox.y + this.collBox.height / 2);  // Translate to center
+        ctx.rotate(this.rotation);  // Apply rotation
+        ctx.drawImage(this.image, -this.collBox.width / 2, -this.collBox.height / 2);  // Draw image centered
+        ctx.restore();  // Restore context state`
         
-        ctx.fillStyle = "red";
-        ctx.fillRect(this.collBox.x, this.collBox.y, this.collBox.width, this.collBox.height);
+
+
 
         this.collBox.x -= this.dx;
         this.collBox.y += this.dy;
@@ -200,4 +207,5 @@ function getRandomInt(max) {
 function getRandomSign() {
     return Math.random() < 0.5 ? -1 : 1;
 }
+
 
