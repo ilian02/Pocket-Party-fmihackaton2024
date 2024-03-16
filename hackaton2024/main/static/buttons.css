@@ -1,0 +1,132 @@
+@media (min-width:480px)  { 
+    body{
+        justify-content: center;
+        background-image: url("../static/console-background.png");
+    }
+
+    #game-buttons {
+        align-items: center;
+    }
+
+    #up-btn {
+        margin-bottom: 25px;
+        width: 0;
+        height: 0;
+        border-left: 60px solid transparent;
+        border-right: 60px solid transparent;
+        border-bottom: 50px solid #555;
+    }
+    #up-btn:active{
+        border-bottom: 50px solid #cb3838;
+    }
+    #down-btn {
+        margin-top: 25px;
+        width: 0;
+        height: 0;
+        border-left: 60px solid transparent;
+        border-right: 60px solid transparent;
+        border-top: 50px solid #2a9297;
+    }
+    #down-btn:active{
+        border-top: 50px solid #cb3838;
+    }
+    
+    #left-btn {
+        width: 0;
+        height: 0;
+        border-top: 27px solid transparent;
+        border-right: 90px solid #555;
+        border-bottom: 27px solid transparent;
+    }
+
+    #left-btn:active{
+        border-right: 90px solid #cb3838;
+    }
+
+    #right-btn {
+        width: 0;
+        height: 0;
+        border-top: 27px solid transparent;
+        border-left: 90px solid #555;
+        border-bottom: 27px solid transparent;
+    }
+
+    #right-btn:active{
+        border-left: 90px solid #cb3838;
+    }
+
+    .btn-row{
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+    }
+
+    .game-btn {
+        margin: 0 auto;
+    }
+}
+
+.leave-btn {
+    position: relative;
+    height: 50px;
+    padding: 0 30px;
+    border: 2px solid #ffffff;
+    background: #000000;
+    user-select: none;
+    white-space: nowrap;
+    transition: all .05s linear;
+    font-family: inherit;
+    color:#ffffff;
+   }
+   
+   .leave-btn:before, .leave-btn:after {
+    content: "";
+    position: absolute;
+    background: #000000;
+    transition: all .2s linear;
+   }
+   
+   .leave-btn:before {
+    width: calc(100% + 6px);
+    height: calc(100% - 16px);
+    top: 8px;
+    left: -3px;
+   }
+   
+   .leave-btn:after {
+    width: calc(100% - 16px);
+    height: calc(100% + 6px);
+    top: -3px;
+    left: 8px;
+   }
+   
+   .leave-btn:hover {
+    cursor: crosshair;
+    color:#960707;
+    border: 2px solid #960707;
+   }
+   
+   .leave-btn:active {
+    transform: scale(0.95);
+    color:#960707;
+    border: 2px solid #960707;
+   }
+   
+   .leave-btn:hover:before {
+    height: calc(100% - 32px);
+    top: 16px;
+    
+   }
+   
+   .leave-btn:hover:after {
+    width: calc(100% - 32px);
+    left: 16px;
+    
+   }
+   
+   .leave-btn span {
+    font-size: 15px;
+    z-index: 3;
+    position: relative;
+    font-weight: 600;
+   }
