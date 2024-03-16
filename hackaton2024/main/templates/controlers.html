@@ -5,5 +5,20 @@
 </head>
 <body>
     <h1>Controls page</h1>
+
+    <button onclick="clicked()">click me</button>
+    <script type="text/javascript">
+        let url = `ws://${window.location.host}/ws/socket-server/`
+        const controlSocket = new WebSocket(url)
+        controlSocket.onmessage = function(e) {
+            let data = JSON.parse(e.data)
+            console.log("data: ", data)
+        }
+
+        function clicked() {
+            console.log('clicked')
+            controlSocket.send(JSON.stringify({'message': 'I was clicked'}))
+        }
+    </script>
 </body>
 </html>

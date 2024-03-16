@@ -8,14 +8,19 @@
     <ul>
         {% for lobby in lobbies %}
             <li>
-                {{ lobby.name }}
+                {{ lobby.id }}
                 <form action="join_lobby" method="post" style="display: inline;">
                     {% csrf_token %}
                     <input type="hidden" name="lobby_id" value="{{ lobby.id }}">
-                    <button type="submit">Join Lobby</button>
+                    <button type="submit">Join Lobby {{ lobby.id }}</button>
                 </form>
             </li>
         {% endfor %}
+
+        <form action="create_lobby" method="post" style="display: inline;">
+            {% csrf_token %}
+            <button type="submit">Create Lobby</button>
+        </form>
     </ul>
 </body>
 </html>
