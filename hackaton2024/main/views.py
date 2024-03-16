@@ -14,10 +14,12 @@ def lobbies(request):
     return render(request, 'lobbies.html', {'lobbies': lobbies})
 
 def join_lobby(request):
+    print(request.POST.get('lobby_id'))
     return render(request, 'controlers.html')
 
 def create_lobby(request):
     lobby_manager.create_lobby()
     lobbies = lobby_manager.get_current_lobbies()
+    # print(lobbies)
     return render(request, 'lobbies.html', {'lobbies': lobbies})
     
