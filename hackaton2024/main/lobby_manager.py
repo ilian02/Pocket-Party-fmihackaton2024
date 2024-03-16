@@ -7,9 +7,11 @@ class lobbyManager:
     def create_lobby(self):
         new_lobby = lobby()
         current_lobbies = self.get_current_lobbies()
-        current_lobbies[new_lobby.id] = new_lobby
+        current_lobbies[new_lobby.id] = new_lobby.to_json()
 
-        with open('./main/db.json') as f:
+        print(current_lobbies)
+
+        with open('./main/db.json', 'w') as f:
             json.dump(current_lobbies, f)
 
         return new_lobby
@@ -22,5 +24,7 @@ class lobbyManager:
         
         with open('./main/db.json') as f:
             lobbies = json.load(f)
+
+        print(lobbies)
             
         return lobbies
