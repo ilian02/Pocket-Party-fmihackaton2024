@@ -12,7 +12,10 @@ class SpaceshipGame {
         this.backgroundImage = new Image();
         this.backgroundImage.src = "./assets/backgrounds/im3.png";
 
-        this.ship = new Ship(new CollisionBox(200, 500, SHIP_WIDTH, SHIP_HEIGHT), "./assets/testship.png");
+        this.ship = new Ship(new CollisionBox(200, 500, 10, 10), "./assets/Ship6/Ship6.png");
+        
+
+        this.ship.collBox.collidesWith(this.ship.collBox)
         this.asteroids = [];
     }
   
@@ -27,17 +30,21 @@ class SpaceshipGame {
             }
             
         }
+        
         let deleteIndex = []
         for (let asteroid of this.asteroids) {
 
-            console.log(this.asteroids.length)
+            //console.log(asteroid.collBox.r);
             if (asteroid.removeCondition()) {
                 deleteIndex.push(this.asteroids.indexOf(asteroid));
             }
             asteroid.draw(this.ctx);
-
+            
+            
             if (this.ship.collBox.collidesWith(asteroid.collBox)) {
                 console.log("collides");
+                console.log("Ship position:", this.ship.collBox.x, this.ship.collBox.y);
+                console.log("Asteroid position:", asteroid.collBox.x, asteroid.collBox.y);
             }
 
 
@@ -47,6 +54,7 @@ class SpaceshipGame {
             this.asteroids.splice(index, 1);
         }
 
+        
 
 
         
@@ -54,7 +62,7 @@ class SpaceshipGame {
     
     start() {
         this.intervalId = setInterval(this.update.bind(this), 1000 / 60);
-        window.addEventListener('keydown', this.moveShip); // Add event listener for keydown
+        //window.addEventListener('keydown', this.moveShip); // Add event listener for keydown
     }
   
     stop() {
@@ -100,15 +108,21 @@ class Ship {
         this.collBox = collBox;  //CollisionBox(100, 100, settings.SHIP_WIDTH, settings.SHIP_HEIGHT);
         this.image = new Image();
         this.image.src = imageURL;
-        this.image.width = collBox.width;
-        this.image.height = collBox.height;
 
-        //this.collBox.width = this.image.width;
-        //this.collBox.height = this.image.height;
+
+        this.image.onload = () => {
+            this.collBox.width = this.image.naturalWidth;
+            this.collBox.height = this.image.naturalHeight;
+        }
 
     }
     draw(ctx) {
+        //console.log("img widht" + this.collBox.width);
+        //console.log("img height" + this.collBox.height);
+
         ctx.drawImage(this.image, this.collBox.x, this.collBox.y, this.collBox.width, this.collBox.height);
+        ctx.fillStyle = "red";
+        ctx.fillRect(this.collBox.x, this.collBox.y, this.collBox.width, this.collBox.height);
         //drawing over the coll box using its topleft cords
 
     }
@@ -121,21 +135,33 @@ class Asteroid {
         this.image.src = imageURL;
         this.dx = dx;
         this.dy = dy;
-
-        this.collBox.width = this.image.width;
-        this.collBox.height = this.image.height;
+        
+        this.image.onload = () => {
+            this.collBox.width = this.image.naturalWidth;
+            this.collBox.height = this.image.naturalHeight;
+        }
 
 
     }
 
     draw(ctx) {
+        
+        //console.log("aster widht" + this.collBox.width);
+        //console.log("aster height" + this.collBox.height);
+
         ctx.drawImage(this.image, this.collBox.x, this.collBox.y);
+        
+        ctx.fillStyle = "red";
+        ctx.fillRect(this.collBox.x, this.collBox.y, this.collBox.width, this.collBox.height);
+
         this.collBox.x -= this.dx;
         this.collBox.y += this.dy;
     }
 
     removeCondition() {
-        return (this.collBox.x + this.collBox.width < 0 || this.collBox.y + this.collBox.height < 0 || this.collBox.y - this.collBox.height > CANVAS_HEIGHT)     
+        return (this.collBox.x + this.collBox.width < 0 || 
+                this.collBox.y + this.collBox.height < 0 || 
+                this.collBox.y - this.collBox.height > CANVAS_HEIGHT)     
     }
 
 
@@ -149,24 +175,15 @@ class CollisionBox {
         this.y = y; 
         this.width = width;
         this.height = height;
-        this.centerx = (this.x + this.width) / 2;
-        this.centery = (this.y + this.height) / 2;
+
 
     }
 
-
     collidesWith(other) {
-        return (
-        //     this.x < otherBox.x + otherBox.width &&
-        //     this.x + this.width > otherBox.x &&
-        //     this.y < otherBox.y + otherBox.height &&
-        //     this.y + this.height > otherBox.y
-        // );
-            this.x < other.x + other.width &&
+        return(this.x < other.x + other.width &&
             other.x < this.x + this.width &&
             this.y < other.y + other.height &&
-            other.y < this.y + this.height
-        );
+            other.y < this.y + this.height);
     }
 }
 
