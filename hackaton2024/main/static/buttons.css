@@ -146,7 +146,7 @@ body{
 
    /* buttons for the lobby */
 
-   button {
+   .lobby-btn {
     font-size: 18px;
     color: #e1e1e1;
     font-family: inherit;
@@ -159,20 +159,21 @@ body{
     transition-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
     transition-duration: 400ms;
     transition-property: color;
+    margin-bottom: 5px;
   }
   
-  button:focus,
-  button:hover {
-    color: #fff;
+  .lobby-btn:focus,
+  .lobby-btn:hover, .lobby-btn:focus:active {
+    color: #4964d1;
   }
   
-  button:focus:after,
-  button:hover:after {
+  .lobby-btn:focus:after,
+  .lobby-btn:hover:after, .lobby-btn:focus:hover:active {
     width: 100%;
     left: 0%;
   }
   
-  button:after {
+  .lobby-btn:after {
     content: "";
     pointer-events: none;
     bottom: -2px;
@@ -184,4 +185,8 @@ body{
     transition-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
     transition-duration: 400ms;
     transition-property: width, left;
+  }
+
+  .create-lobby {
+    margin: 10px;
   }
