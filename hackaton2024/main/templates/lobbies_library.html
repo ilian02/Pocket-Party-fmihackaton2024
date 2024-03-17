@@ -32,8 +32,7 @@
     {% endfor %}
     
   </div>
-  <form action="create_lobby" method="post">
-      {% csrf_token %}
+  <form action="waitroom">
       <button class="leave-btn create-lobby" type="submit"><span>Create new lobby</span></button>
   </form>
 </main>
