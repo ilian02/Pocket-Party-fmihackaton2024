@@ -26,7 +26,7 @@ def create_lobby(request):
     lobby_manager.create_lobby()
     lobbies = lobby_manager.get_current_lobbies()
     # print(lobbies)
-    return render(request, 'host_screen.html', {'lobbies': lobbies})
+    return render(request, 'cosmic_co-pilot.html', {'lobbies': lobbies})
 
 def leave_lobby(request):
     print("leaving the lobby")
