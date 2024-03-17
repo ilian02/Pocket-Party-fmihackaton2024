@@ -168,7 +168,7 @@ body{
     transition-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
     transition-duration: 400ms;
     transition-property: color;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
   }
   
   .lobby-btn:focus,
