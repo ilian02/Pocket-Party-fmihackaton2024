@@ -1,0 +1,18 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'screen.css'%}" />
+  <!-- <link rel="stylesheet" href="{% static 'styles_landing.css'%}"> -->
+  <!-- <link rel="stylesheet" href="{% static 'buttons.css'%}"> -->
+    <title>Cosmic Co-Pilot {{lobby}} </title>
+
+</head>
+<body style="background-color: black">
+    <!-- Game canvas -->
+    <canvas id="canvas" width="1920" height="1080"></canvas>    
+    <script src= "{% static 'screen.js' %}" >  </script>
+</body>
+</html>

@@ -26,7 +26,7 @@ def create_lobby(request):
     lobby_manager.create_lobby()
     lobbies = lobby_manager.get_current_lobbies()
     # print(lobbies)
-    return render(request, 'lobbies_library.html', {'lobbies': lobbies})
+    return render(request, 'host_screen.html', {'lobbies': lobbies})
 
 def leave_lobby(request):
     print("leaving the lobby")
@@ -36,6 +36,7 @@ def leave_lobby(request):
     # Remove the player from the 
     lobbies = lobby_manager.get_current_lobbies()
     return render(request, 'lobbies_library.html', {'lobbies': lobbies})
+
 
 
     
