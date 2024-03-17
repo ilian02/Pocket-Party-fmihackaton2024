@@ -7,12 +7,11 @@ html{
 body {
     margin: 0;
     padding: 0;
-    
     background-image: url('../static/im2.png'); 
     background-size: cover;
     background-position: center;
-    background-repeat: no-repeat;
-    height: 100vh; /* Ensure full viewport height */
+    /* background-repeat: no-repeat; */
+    
   }
 
   h1, h2, h3, h4 {
@@ -21,15 +20,23 @@ body {
     font-size: 2em; /* Adjust font size as needed */
     text-shadow: 2px 2px 0 #FF8C00; 
     font-family: "Orbitron", sans-serif;
+    margin: 3%;
   }
   
   h1 {
-    font-size: 7em; 
-    margin-top: 17vh; 
+    /* font-size: 7em; 
+    margin-top: 17vh;  */
+    font-size: 8vw;
+    margin-top: 12vh;
   }
   
-  h2 {
-    font-size: 4em; 
+  h2, h3 {
+    /* font-size: 4em;  */
+    font-size: 3vw;
+  }
+  h3 {
+    margin: 3%;
+    margin-top: 4%;
   }
 
   /* for the input tag */
@@ -201,4 +208,33 @@ body {
 .button:hover .hover-text, .button:active .hover-text {
   width: 100%;
   filter: drop-shadow(0 5px 23px var(--animation-color))
+}
+
+/* FOR PHONE */
+/* 
+@media (min-width:480px)  { 
+  h1 {
+    font-size: 50px; 
+    margin-top: 5%; 
+  }
+  
+  h2 {
+    font-size: 25px; 
+  }
+} */
+
+.host-game {
+  display: flex;
+  flex-direction: row;
+    justify-content: center;
+}
+
+@media (min-width:1000px)  { 
+  /* h3{
+    margin: 0;
+    margin-top: 4%;
+  } */
+  .host-game {
+    display: block;
+  }
 }

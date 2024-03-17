@@ -1,6 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Big+Shoulders+Stencil+Text:wght@100..900&family=Truculenta:opsz,wght@12..72,100..900&family=Yanone+Kaffeesatz:wght@200..700&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Big+Shoulders+Stencil+Text:wght@100..900&family=Truculenta:opsz,wght@12..72,100..900&family=Yanone+Kaffeesatz:wght@200..700&display=swap'); */
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Big+Shoulders+Stencil+Text:wght@100..900&family=Orbitron:wght@400..900&family=Truculenta:opsz,wght@12..72,100..900&family=Yanone+Kaffeesatz:wght@200..700&display=swap');
+
 html{
-    font-family: "Truculenta", sans-serif;
+    /* font-family: "Truculenta", sans-serif; */
+    font-family: "Orbitron", sans-serif;
 }
 body{
     justify-content: center;
@@ -88,7 +91,8 @@ body{
     user-select: none;
     white-space: nowrap;
     transition: all .05s linear;
-    font-family: inherit;
+    font-family: "Orbitron", sans-serif;
+    /* font-family: inherit; */
     color:#ffffff;
    }
    
