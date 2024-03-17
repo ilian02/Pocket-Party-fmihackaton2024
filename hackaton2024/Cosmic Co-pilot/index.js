@@ -6,6 +6,7 @@ const HEALTH_BAR_WIDTH = 420;
 const HEALTH_BAR_HEIGHT = 48;
 
 const MAX_BOSS_HEALTH = 100;
+const EPSILON = 1e-6;
 
 let moveUp = true;
 
@@ -51,8 +52,8 @@ class SpaceshipGame {
         this.victoryImage = new Image();
         this.defeatImage = new Image();
 
-        this.victoryImage.src = "./assets/extras/03.png";
-        this.defeatImage.src = "./assets/extras/03.png";
+        this.victoryImage.src = "./assets/extras/victory.png";
+        this.defeatImage.src = "./assets/extras/defeat.png";
     }
   
     update() {
@@ -63,10 +64,10 @@ class SpaceshipGame {
         this.ctx.drawImage(this.backgroundImage, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
         
         if (this.ship.lives <= 0) {
-            this.ctx.drawImage(this.victoryImage, 600, 300);
+            this.ctx.drawImage(this.defeatImage, 600, 300);
         }
         else if (this.boss.health <= 0) {
-            this.ctx.drawImage(this.defeatImage, 100, 300);
+            this.ctx.drawImage(this.victoryImage, 100, 300);
         }
         else if (this.tick <= 0 * FPS_CAP) {
                 //Spawning and moving asteroids
@@ -378,7 +379,6 @@ class Boss {
 
     }
     draw(ctx, shipCollBox) {
-
         ctx.drawImage(this.image, this.collBox.x, this.collBox.y, this.collBox.width, this.collBox.height);
         //ctx.fillStyle = "red";
         //ctx.fillRect(this.collBox.x, this.collBox.y, this.collBox.width, this.collBox.height);
@@ -386,13 +386,16 @@ class Boss {
         this.collBox.x += this.dx;
         this.collBox.y += this.dy;
 
-        if (this.collBox.x <= 200 || this.collBox.x >= 1560){
+        const buffer = 10;
+        if (this.collBox.x <= 200 || this.collBox.x >= 1520){
             this.dx = -signOf(this.dx) * (getRandomInt(5) + 3);
-            this.dy = getRandomInt(11) - 6;
+            this.collBox.x += this.dx > 0 ? buffer : -buffer;
+            //this.dy = getRandomInt(11) - 6;
         }
         if (this.collBox.y <= 20 || this.collBox.y >= 680){
             this.dy = -signOf(this.dy) * (getRandomInt(5) + 3);
-            this.dx = getRandomInt(11) - 6;
+            //this.dx = getRandomInt(11) - 6;
+            this.collBox.y += this.dy > 0 ? buffer : -buffer;
         }
 
     }
