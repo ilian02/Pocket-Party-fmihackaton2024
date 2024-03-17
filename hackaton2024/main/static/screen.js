@@ -2,15 +2,15 @@ const UP_BOUND = 200;
 const DOWN_BOUND = 880;
 let moveUp = true
 
-const SHIP_PROJECTILE_URLS = ["./assets/extras/projectiles/projectile1.png", 
-                                "./assets/extras/projectiles/projectile2.png", 
-                                "./assets/extras/projectiles/projectile3.png", 
-                                "./assets/extras/projectiles/projectile4.png"];
+const SHIP_PROJECTILE_URLS = ["./static/assets/extras/projectiles/projectile1.png", 
+                                "./static/assets/extras/projectiles/projectile2.png", 
+                                "./static/assets/extras/projectiles/projectile3.png", 
+                                "./static/assets/extras/projectiles/projectile4.png"];
 
-const BOSS_PROJECTILE_URLS = ["./assets/extras/projectiles/boss_projectile1.png", 
-                                "./assets/extras/projectiles/boss_projectile2.png", 
-                                "./assets/extras/projectiles/boss_projectile3.png", 
-                                "./assets/extras/projectiles/boss_projectile4.png"];
+const BOSS_PROJECTILE_URLS = ["./static/assets/extras/projectiles/boss_projectile1.png", 
+                                "./static/assets/extras/projectiles/boss_projectile2.png", 
+                                "./static/assets/extras/projectiles/boss_projectile3.png", 
+                                "./static/assets/extras/projectiles/boss_projectile4.png"];
 
 const CANVAS_WIDTH = 1920;
 const CANVAS_HEIGHT = 1080;
@@ -22,11 +22,11 @@ class SpaceshipGame {
         this.ctx = this.canvas.getContext('2d');
 
         this.backgroundImage = new Image();
-        this.backgroundImage.src = "./assets/backgrounds/im3.png";
+        this.backgroundImage.src = "./static/assets/backgrounds/im3.png";
 
-        this.ship = new Ship(new CollisionBox(200, 500, 10, 10), "./assets/Ship6/Ship6.png");
+        this.ship = new Ship(new CollisionBox(200, 500, 10, 10), "./static/assets/Ship6/Ship6.png");
         
-        this.boss = new Boss(new CollisionBox(1200, 340, 0, 0), "./assets/extras/boss.png");
+        this.boss = new Boss(new CollisionBox(1200, 340, 0, 0), "./static/assets/extras/boss.png");
 
         this.asteroids = [];
         this.projectiles = [];
@@ -433,7 +433,7 @@ class BossProjectile {
 
 function getRandomAsteroidURL() {
     let asteroidNumber = getRandomInt(16) + 1;
-    return "./assets/comets/Picture" + asteroidNumber + ".png";
+    return "./static/assets/comets/Picture" + asteroidNumber + ".png";
 }
 
 function getRandomInt(max) {
