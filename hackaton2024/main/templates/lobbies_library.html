@@ -11,7 +11,7 @@
 </head>
 
 <body>
-  <h1>Active lobbies</h1>
+  <h1 id="title">Active lobbies</h1>
   <div class="container">
     {% for lobby in lobbies  %}
     <li>
@@ -22,12 +22,12 @@
         </form>
     </li>
     {% endfor %}
-
-    <form action="create_lobby" method="post">
-        {% csrf_token %}
-        <button class="leave-btn create-lobby" type="submit"><span>Create new lobby</span></button>
-    </form>
+    
   </div>
+  <form action="create_lobby" method="post">
+      {% csrf_token %}
+      <button class="leave-btn create-lobby" type="submit"><span>Create new lobby</span></button>
+  </form>
 
 </body>
 </html>

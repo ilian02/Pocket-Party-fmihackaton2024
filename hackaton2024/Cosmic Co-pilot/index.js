@@ -2,11 +2,22 @@ const UP_BOUND = 200;
 const DOWN_BOUND = 880;
 let moveUp = true
 
+const SHIP_PROJECTILE_URLS = ["./assets/extras/projectiles/projectile1.png", 
+                                "./assets/extras/projectiles/projectile2.png", 
+                                "./assets/extras/projectiles/projectile3.png", 
+                                "./assets/extras/projectiles/projectile4.png"];
+
+const BOSS_PROJECTILE_URLS = ["./assets/extras/projectiles/boss_projectile1.png", 
+                                "./assets/extras/projectiles/boss_projectile2.png", 
+                                "./assets/extras/projectiles/boss_projectile3.png", 
+                                "./assets/extras/projectiles/boss_projectile4.png"];
+
 const CANVAS_WIDTH = 1920;
 const CANVAS_HEIGHT = 1080;
 
 class SpaceshipGame {
     constructor(canvasId) {
+        this.tick = 0;
         this.canvas = document.getElementById(canvasId);
         this.ctx = this.canvas.getContext('2d');
 
@@ -15,34 +26,37 @@ class SpaceshipGame {
 
         this.ship = new Ship(new CollisionBox(200, 500, 10, 10), "./assets/Ship6/Ship6.png");
         
-        
-        
+        this.boss = new Boss(new CollisionBox(1200, 340, 0, 0), "./assets/extras/boss.png");
 
-        this.ship.collBox.collidesWith(this.ship.collBox)
         this.asteroids = [];
         this.projectiles = [];
+        this.bossProjectiles = [];
     }
   
     update() {
+        this.tick += 1;
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
         this.ctx.drawImage(this.backgroundImage, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
         this.moveShip(this.ship.collBox.x, this.ship.collBox.y);
         this.ship.draw(this.ctx);
 
-        if (getRandomInt(100) <= 10) {
-            for(let asteroid of this.createAsteroids()){
-                this.projectiles.push(this.createProjectile(this.ship.collBox));
+        
+
+        ///////////////////////////////////////
+        if ((this.tick + 10) % 120 == 0) {
+            for(let projectile of this.createBossAttack(this.boss.collBox)) {
+                this.bossProjectiles.push(projectile);
             }
         }
 
-        let deleteProjectilesIndexes = []
-        for (let projecile of this.projectiles) {
+        let deleteBossProjectilesIndexes = []
+        for (let projectile of this.bossProjectiles) {
 
             //console.log(asteroid.collBox.r);
-            if (projecile.removeCondition()) {
-                deleteProjectilesIndexes.push(this.projectiles.indexOf(projectile));
+            if (projectile.removeCondition()) {
+                deleteBossProjectilesIndexes.push(this.bossProjectiles.indexOf(projectile));
             }
-            projecile.draw(this.ctx);
+            projectile.draw(this.ctx);
             
             //if (this.ship.collBox.collidesWith(asteroid.collBox)) {
                 //console.log("collides");
@@ -50,13 +64,36 @@ class SpaceshipGame {
             //}
         }
 
+        for (let index of deleteBossProjectilesIndexes.reverse()) {
+            this.bossProjectiles.splice(index, 1);
+        }
+        /////////////////////////////////////
+        this.boss.draw(this.ctx);
+        ///////////////////////////////////////
+        if (this.tick % 60 == 0) {
+            this.projectiles.push(this.createShipProjectile(this.ship.collBox));
+        }
 
+        let deleteProjectilesIndexes = []
+        for (let projectile of this.projectiles) {
 
+            //console.log(asteroid.collBox.r);
+            if (projectile.removeCondition()) {
+                deleteProjectilesIndexes.push(this.projectiles.indexOf(projectile));
+            }
+            projectile.draw(this.ctx);
+            
+            //if (this.ship.collBox.collidesWith(asteroid.collBox)) {
+                //console.log("collides");
+                //deleteAsteroidsIndexes.push(this.asteroids.indexOf(asteroid));
+            //}
+        }
 
+        for (let index of deleteProjectilesIndexes.reverse()) {
+            this.projectiles.splice(index, 1);
+        }
 
-        console.log(this.projectiles.length)
-
-
+        /////////////////////////////////////
         if (getRandomInt(100) <= 10) {
             for(let asteroid of this.createAsteroids()){
                 this.asteroids.push(asteroid);
@@ -127,9 +164,37 @@ class SpaceshipGame {
         return asteroids;
     }
 
-    createProjectile(shipCollBox) {
-        return new Projectile(new CollisionBox(shipCollBox.x + shipCollBox.width + 3, shipCollBox.y + shipCollBox.height / 2, 0, 0));
+    createShipProjectile(shipCollBox) {
+        return new Projectile(new CollisionBox(shipCollBox.x + shipCollBox.width + 3, 
+                                                             shipCollBox.y + shipCollBox.height / 2, 0, 0), SHIP_PROJECTILE_URLS);
     }
+
+    createBossAttack(bossCollBox){
+        let projectiles = [];
+        projectiles.push(new BossProjectile(new CollisionBox(bossCollBox.x + bossCollBox.width + 3, 
+            bossCollBox.y + bossCollBox.height / 2, 0, 0), BOSS_PROJECTILE_URLS, "right"));
+        projectiles.push(new BossProjectile(new CollisionBox(bossCollBox.x - 3, 
+            bossCollBox.y + bossCollBox.height / 2, 0, 0), BOSS_PROJECTILE_URLS, "left"));
+        projectiles.push(new BossProjectile(new CollisionBox(bossCollBox.x + bossCollBox.width / 2, 
+            bossCollBox.y - 3, 0, 0), BOSS_PROJECTILE_URLS, "top"));
+        projectiles.push(new BossProjectile(new CollisionBox(bossCollBox.x + bossCollBox.width / 2, 
+            bossCollBox.y + bossCollBox.height + 3, 0, 0), BOSS_PROJECTILE_URLS, "bottom"));
+        
+        projectiles.push(new BossProjectile(new CollisionBox(bossCollBox.x + 2, 
+            bossCollBox.y + 2, 0, 0), BOSS_PROJECTILE_URLS, "topleft"));
+        projectiles.push(new BossProjectile(new CollisionBox(bossCollBox.x + bossCollBox.width - 2, 
+            bossCollBox.y + 2, 0, 0), BOSS_PROJECTILE_URLS, "topright"));
+        projectiles.push(new BossProjectile(new CollisionBox(bossCollBox.x + 2, 
+            bossCollBox.y + bossCollBox.height - 2, 0, 0), BOSS_PROJECTILE_URLS, "bottomleft"));
+        projectiles.push(new BossProjectile(new CollisionBox(bossCollBox.x + bossCollBox.width - 2, 
+            bossCollBox.y + bossCollBox.height - 2, 0, 0), BOSS_PROJECTILE_URLS, "bottomright"));
+                    
+        return projectiles;
+    }
+    //createBossProjectile(shipCollBox) {
+    //    return new BossProjectile(new CollisionBox(shipCollBox.x + shipCollBox.width + 3, 
+    //                                                         shipCollBox.y + shipCollBox.height / 2, 0, 0), BOSS_PROJECTILE_URLS);
+    //}
 
     
 }
@@ -162,6 +227,43 @@ class Ship {
         //ctx.fillStyle = "red";
         //ctx.fillRect(this.collBox.x, this.collBox.y, this.collBox.width, this.collBox.height);
         //drawing over the coll box using its topleft cords
+
+    }
+}
+
+class Boss {
+    constructor (collBox, imageURL) {
+        this.collBox = collBox;  //CollisionBox(100, 100, settings.SHIP_WIDTH, settings.SHIP_HEIGHT);
+        this.image = new Image();
+        this.image.src = imageURL;
+        
+        this.dx = getRandomSign() * (getRandomInt(4) + 2);
+        this.dy = getRandomSign() * (getRandomInt(4) + 2);
+
+
+        this.image.onload = () => {
+            this.collBox.width = this.image.naturalWidth;
+            this.collBox.height = this.image.naturalHeight;
+        }
+
+    }
+    draw(ctx, shipCollBox) {
+
+        ctx.drawImage(this.image, this.collBox.x, this.collBox.y, this.collBox.width, this.collBox.height);
+        //ctx.fillStyle = "red";
+        //ctx.fillRect(this.collBox.x, this.collBox.y, this.collBox.width, this.collBox.height);
+        //drawing over the coll box using its topleft cords
+        this.collBox.x += this.dx;
+        this.collBox.y += this.dy;
+
+        if (this.collBox.x <= 20 || this.collBox.x >= 1560){
+            this.dx = -signOf(this.dx) * (getRandomInt(5) + 3);
+            this.dy = getRandomInt(11) - 6;
+        }
+        if (this.collBox.y <= 20 || this.collBox.y >= 680){
+            this.dy = -signOf(this.dy) * (getRandomInt(5) + 3);
+            this.dx = getRandomInt(11) - 6;
+        }
 
     }
 }
@@ -236,11 +338,8 @@ class CollisionBox {
 }
 
 class Projectile {
-    constructor (collBox) {
-        this.imageURLS = ["./assets/extras/projectiles/projectile1.png", 
-                          "./assets/extras/projectiles/projectile2.png", 
-                          "./assets/extras/projectiles/projectile3.png", 
-                          "./assets/extras/projectiles/projectile4.png"];
+    constructor (collBox, imageURLS) {
+        this.imageURLS = imageURLS;
         this.collBox = collBox;  //CollisionBox(100, 100, settings.SHIP_WIDTH, settings.SHIP_HEIGHT);
         this.images = [];
         for (let i = 0; i < 4 ; i++) {
@@ -257,16 +356,75 @@ class Projectile {
         
     }
     draw(ctx) {
-        ctx.drawImage(this.images[this.counter % 4], this.collBox.x, this.collBox.y, this.collBox.width, this.collBox.height);
+        ctx.drawImage(this.images[Math.floor((this.counter % 12) / 3)], this.collBox.x, this.collBox.y, this.collBox.width, this.collBox.height);
         this.counter += 1;
 
         //ctx.fillStyle = "red";
         //ctx.fillRect(this.collBox.x, this.collBox.y, this.collBox.width, this.collBox.height);
         //drawing over the coll box using its topleft cords
-        this.collBox.x += 1;
+        this.collBox.x += 5;
     }
     removeCondition() {
-        return (this.collBox.x > 2000);
+        return (this.collBox.x >= 2000 || this.collBox.x <= -100 || this.collBox.y >= 1100 || this.collBox.y <= -100);
+    }
+
+
+}
+
+class BossProjectile {
+    constructor (collBox, imageURLS, type) {
+        this.imageURLS = imageURLS;
+        this.collBox = collBox;  //CollisionBox(100, 100, settings.SHIP_WIDTH, settings.SHIP_HEIGHT);
+        this.images = [];
+        for (let i = 0; i < 4 ; i++) {
+            this.images[i] = new Image();
+            this.images[i].src = this.imageURLS[i];
+        }
+        this.counter = 0;
+        this.type = type;
+
+
+        this.images[1].onload = () => {
+            this.collBox.width = this.images[1].naturalWidth;
+            this.collBox.height = this.images[1].naturalHeight;
+        }
+        
+    }
+    draw(ctx) {
+        ctx.drawImage(this.images[Math.floor((this.counter % 12) / 3)], this.collBox.x, this.collBox.y, this.collBox.width, this.collBox.height);
+        this.counter += 1;
+
+        //ctx.fillStyle = "red";
+        //ctx.fillRect(this.collBox.x, this.collBox.y, this.collBox.width, this.collBox.height);
+        //drawing over the coll box using its topleft cords
+        if(this.type == "left")
+            this.collBox.x -= 7;
+        else if(this.type == "right")
+            this.collBox.x += 7;
+        else if(this.type == "top")
+            this.collBox.y -= 7;
+        else if(this.type == "bottom")
+            this.collBox.y += 7;
+        else if(this.type == "topleft") {
+            this.collBox.x -= 5;
+            this.collBox.y -= 5;
+        }
+        else if(this.type == "topright") {
+            this.collBox.x += 5;
+            this.collBox.y -= 5;
+        }
+        else if(this.type == "bottomleft") {
+            this.collBox.x -= 5;
+            this.collBox.y += 5;
+        }
+        else if(this.type == "bottomright") {
+            this.collBox.x += 5;
+            this.collBox.y += 5;
+        }
+
+    }
+    removeCondition() {
+        return (this.collBox.x >= 2000 || this.collBox.x <= -100 || this.collBox.y >= 1100 || this.collBox.y <= -100);
     }
 
 
@@ -286,4 +444,11 @@ function getRandomSign() {
     return Math.random() < 0.5 ? -1 : 1;
 }
 
-
+function signOf(num){
+    if (num>0) {
+        return 1;
+    }
+    else {
+        return -1;
+    }
+}

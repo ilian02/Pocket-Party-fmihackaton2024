@@ -10,9 +10,14 @@
 </head>
 
 <body>
-    <button class="leave-btn" onclick="leaveLobby()">
-        <span>Leave lobby</span>
-    </button>
+    <form action="leave_lobby" method="post">
+        {% csrf_token %}
+        <button class="leave-btn" type="submit">
+            <span>Leave lobby</span>
+        </button>
+        <input type="hidden" name="lobby_id" value="{{ lobby_id }}">
+        <input type="hidden" name="user_id" value="{{ user_id }}">
+    </form>
 
     <script type="text/javascript">
 
