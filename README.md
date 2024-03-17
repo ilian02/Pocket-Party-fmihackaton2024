@@ -1,4 +1,4 @@
-# Name 
+# Pocket Party
  
 Our system gives its users the opportunity to play multiplayer smartphone joystick games. Each game provides the users with a multiplayer gaming experience that allows them to play a game using
 their smartphones as controllers. The game is displayed on a desktop screen, while users interact with the game using their smartphones as joysticks. Four buttons are displayed on the phone screen, 
