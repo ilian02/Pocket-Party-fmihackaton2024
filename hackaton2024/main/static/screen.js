@@ -23,7 +23,7 @@ const BOSS_PROJECTILE_URLS = ["./assets/extras/projectiles/boss_projectile1.png"
 const CANVAS_WIDTH = 1920;
 const CANVAS_HEIGHT = 1080;
 
-
+let datafromServer;
 
 class SpaceshipGame {
     constructor(canvasId) {
@@ -709,6 +709,12 @@ function rotateAsset(ctx, x, y, width, height, angle, image) {
 }
 
 function getCords() {
+    fetch('./templates/cosmic_co-pilot.html') // Replace with the path to your HTML file
+        .then(response => response.text()) // Converts the response to text
+        .then(html => {
+            console.log(html);
+            
+  })
     
 }
 
