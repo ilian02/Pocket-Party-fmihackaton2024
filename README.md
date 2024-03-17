@@ -7,6 +7,6 @@ users. People can create and join lobbies on the desktop website. The joysticks 
 
 ## Cosmic Co-Pilot
 
-Cosmic Co-Pilot is one of the games users are able to play. The game includes a spaceship that is flying in space. It is controlled by two users that need to cooperate and move the ship left, right, up 
+Cosmic Co-Pilot is one of the games users are able to play. The game includes a spaceship that is flying in space. It is controlled by up to two users that need to cooperate and move the ship left, right, up 
 and down, trying to escape the flying asteroids around it. When the final boss appears, the spaceship automatially begins to shoot at him while the players continue to control its movements. If the boss 
-is killed, the players win the game. If the players crash the ship into an asteroid or the final boss manages to shoot the ship, the game is over and the players lose.
+is killed, the players win the game. If the players crash the ship into an asteroid or the final boss manages to shoot the ship causing it to lose its "lives", the game is over and the players lose.
