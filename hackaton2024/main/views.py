@@ -17,16 +17,14 @@ def lobbies(request):
 def join_lobby(request):
     # print(request.POST.get('lobby_id'))
     user_id = random.randint(10000, 1000000)
-    print(user_id)
-    print(request.POST.get('lobby_id'))
+    # print(user_id)
+    # print(request.POST.get('lobby_id'))
     return render(request, 'controlers.html', {'user_id': user_id, 'lobby_id': request.POST.get('lobby_id')})
 
 def create_lobby(request):
-    print('creating')
-    lobby_manager.create_lobby()
+    new_lobby = lobby_manager.create_lobby()
     lobbies = lobby_manager.get_current_lobbies()
-    # print(lobbies)
-    return render(request, 'host_screen.html', {'lobbies': lobbies})
+    return render(request, 'host_screen.html', {'lobbies': lobbies, 'lobby_id': new_lobby.to_json()['id']})
 
 def leave_lobby(request):
     print("leaving the lobby")

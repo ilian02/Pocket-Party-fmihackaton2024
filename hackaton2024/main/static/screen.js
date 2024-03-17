@@ -2,6 +2,7 @@ const UP_BOUND = 200;
 const DOWN_BOUND = 880;
 let moveUp = true
 
+
 const SHIP_PROJECTILE_URLS = ["./static/assets/extras/projectiles/projectile1.png", 
                                 "./static/assets/extras/projectiles/projectile2.png", 
                                 "./static/assets/extras/projectiles/projectile3.png", 
@@ -26,7 +27,7 @@ class SpaceshipGame {
 
         this.ship = new Ship(new CollisionBox(200, 500, 10, 10), "./static/assets/Ship6/Ship6.png");
         
-        this.boss = new Boss(new CollisionBox(1200, 340, 0, 0), "./static/assets/extras/boss.png");
+        this.boss = new Boss(new CollisionBox(1200, 340, 0, 0), "./static/assets/extras/boss/boss.png");
 
         this.asteroids = [];
         this.projectiles = [];
