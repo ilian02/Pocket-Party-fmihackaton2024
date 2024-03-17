@@ -1,8 +1,10 @@
 from .lobby import lobby
 import json
-import os
 
 class lobbyManager:
+
+    def __init__(self):
+        self.lobbies = self.get_current_lobbies()
 
     def create_lobby(self):
         new_lobby = lobby()
@@ -26,3 +28,7 @@ class lobbyManager:
         # print(lobbies)
             
         return lobbies
+    
+    def save_current_lobbies(self):
+        with open('./main/db.json', 'w') as f:
+            json.dump(self.lobbies, f)
