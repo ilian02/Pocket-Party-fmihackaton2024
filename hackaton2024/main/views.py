@@ -23,10 +23,12 @@ def join_lobby(request):
 
 def create_lobby(request):
     print('creating')
-    lobby_manager.create_lobby()
+    # lobby_manager.create_lobby()
+    id = lobby_manager.create_lobby().id
     lobbies = lobby_manager.get_current_lobbies()
+    print(id)
     # print(lobbies)
-    return render(request, 'cosmic_co-pilot.html', {'lobbies': lobbies})
+    return render(request, 'waitroom.html', {'lobbies': lobbies, 'lobby_id': id})
 
 def leave_lobby(request):
     print("leaving the lobby")
@@ -38,6 +40,7 @@ def leave_lobby(request):
     return render(request, 'lobbies_library.html', {'lobbies': lobbies})
 
 def waitroom(request):
+    lobby_manager.create_lobby()
     return render(request, 'waitroom.html', {'waitroom': waitroom})
 
     
