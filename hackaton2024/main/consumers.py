@@ -20,6 +20,7 @@ class ControllerConsumer(AsyncWebsocketConsumer):
     
     async def receive(self, text_data=None, bytes_data=None):
         data = json.loads(text_data)
+         
         event_type = data.get('event_type')
         if event_type:
             # Trigger an event for the listener consumer

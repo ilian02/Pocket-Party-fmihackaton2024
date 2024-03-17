@@ -457,10 +457,7 @@ class BossProjectile {
     removeCondition() {
         return (this.collBox.x >= 2000 || this.collBox.x <= -100 || this.collBox.y >= 1100 || this.collBox.y <= -100);
     }
-
-
 }
-
 
 function getRandomAsteroidURL() {
     let asteroidNumber = getRandomInt(16) + 1;
