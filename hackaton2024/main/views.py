@@ -26,7 +26,7 @@ def create_lobby(request):
     lobby_manager.create_lobby()
     lobbies = lobby_manager.get_current_lobbies()
     # print(lobbies)
-    return render(request, 'host_screen.html', {'lobbies': lobbies})
+    return render(request, 'cosmic_co-pilot.html', {'lobbies': lobbies})
 
 def leave_lobby(request):
     print("leaving the lobby")
@@ -37,6 +37,7 @@ def leave_lobby(request):
     lobbies = lobby_manager.get_current_lobbies()
     return render(request, 'lobbies_library.html', {'lobbies': lobbies})
 
-
+def waitroom(request):
+    return render(request, 'waitroom.html', {'waitroom': waitroom})
 
     

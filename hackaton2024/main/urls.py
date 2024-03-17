@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import lobbies, join_lobby, create_lobby, index, leave_lobby
+from .views import lobbies, join_lobby, create_lobby, index, leave_lobby, waitroom
 
 urlpatterns = [
     path('', index, name='index'),
@@ -7,5 +7,6 @@ urlpatterns = [
     path('join_lobby', join_lobby),
     path('create_lobby', create_lobby),
     path('lobbies_library', create_lobby),
-    path('leave_lobby', leave_lobby)
+    path('leave_lobby', leave_lobby),
+    path('waitroom', waitroom)
 ]

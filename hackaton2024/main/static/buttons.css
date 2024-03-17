@@ -244,3 +244,9 @@ margin-top: 10px;
     left:0;
     top:0;
   }
+
+  .lobby{
+    position:absolute;
+    right:0;
+    top:0;
+  }
