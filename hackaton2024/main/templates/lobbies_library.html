@@ -11,14 +11,15 @@
 </head>
 
 <body>
-  <h1 id="title">Active lobbies</h1>
-
-  <form action="/">
-    <button class="leave-btn back-btn" type="submit">
-      <span>&larr; Back</span>
-    </button> 
-  </form>
-
+  <div class="title-bar">
+    <form class="button" action="/">
+      <button class="leave-btn back-btn" type="submit">
+        <span>&larr; Back</span>
+      </button> 
+    </form>
+    <h1 class="title">Active lobbies</h1>
+  </div>
+<main>
   <div class="container">
     {% for lobby in lobbies  %}
     <li>
@@ -35,6 +36,6 @@
       {% csrf_token %}
       <button class="leave-btn create-lobby" type="submit"><span>Create new lobby</span></button>
   </form>
-
+</main>
 </body>
 </html>
