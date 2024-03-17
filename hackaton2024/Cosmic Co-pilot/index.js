@@ -23,6 +23,8 @@ const BOSS_PROJECTILE_URLS = ["./assets/extras/projectiles/boss_projectile1.png"
 const CANVAS_WIDTH = 1920;
 const CANVAS_HEIGHT = 1080;
 
+
+
 class SpaceshipGame {
     constructor(canvasId) {
         this.tick = 0;
@@ -38,7 +40,7 @@ class SpaceshipGame {
         this.deliverTheBoss = true;
         
         
-        this.boss = new Boss(new CollisionBox(1200, 340, 0, 0), "./assets/extras/boss/boss2.png");
+        this.boss = new Boss(new CollisionBox(2000, 2000, 0, 0), "./assets/extras/boss/boss2.png");
 
         this.asteroids = [];
         this.projectiles = [];
@@ -54,9 +56,35 @@ class SpaceshipGame {
 
         this.victoryImage.src = "./assets/extras/victory.png";
         this.defeatImage.src = "./assets/extras/defeat.png";
+
+        window.addEventListener("keydown", this.handleKeyDown.bind(this));
+        window.addEventListener("keyup", this.handleKeyUp.bind(this));
+
+        this.keys = {
+            ArrowUp: false,
+            ArrowDown: false,
+            ArrowLeft: false,
+            ArrowRight: false
+        };
+
     }
   
     update() {
+        const shipSpeed = 7;
+        if (this.keys.ArrowUp) {
+            this.moveShip(this.ship.collBox.x, this.ship.collBox.y - shipSpeed);
+        }
+        if (this.keys.ArrowDown) {
+            this.moveShip(this.ship.collBox.x, this.ship.collBox.y + shipSpeed);
+        }
+        if (this.keys.ArrowLeft) {
+            this.moveShip(this.ship.collBox.x - shipSpeed, this.ship.collBox.y);
+        }
+        if (this.keys.ArrowRight) {
+            this.moveShip(this.ship.collBox.x + shipSpeed, this.ship.collBox.y);
+        }
+
+
         let deleteAsteroidsIndexes = [];
 
         this.tick += 1;
@@ -64,12 +92,12 @@ class SpaceshipGame {
         this.ctx.drawImage(this.backgroundImage, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
         
         if (this.ship.lives <= 0) {
-            this.ctx.drawImage(this.defeatImage, 600, 300);
+            this.ctx.drawImage(this.defeatImage, 535, 340);
         }
         else if (this.boss.health <= 0) {
-            this.ctx.drawImage(this.victoryImage, 100, 300);
+            this.ctx.drawImage(this.victoryImage, 482, 340);
         }
-        else if (this.tick <= 10 * FPS_CAP) {
+        else if (this.tick <= 0 * FPS_CAP) {
                 //Spawning and moving asteroids
             if (getRandomInt(100) <= 10) {
                 for(let asteroid of this.createAsteroids()){
@@ -151,7 +179,11 @@ class SpaceshipGame {
             // this.ctx.restore();  // Restore context state`
             
             if (this.bossDeliverX <= 1200)
+            {
                 this.deliverTheBoss = false;
+                this.boss.collBox.x = 1200;
+                this.boss.collBox.y = 340;
+            }
 
             this.moveShip(this.ship.collBox.x, this.ship.collBox.y);
             this.ship.draw(this.ctx);
@@ -256,6 +288,26 @@ class SpaceshipGame {
     }
 
     moveShip(x, y) {
+
+        if (x < 0) {
+            x = 0;
+        } 
+        else if (x + this.ship.collBox.width > CANVAS_WIDTH) {
+            x = CANVAS_WIDTH - this.ship.collBox.width;
+        }
+    
+        if (y < 0) {
+            y = 0;
+        } 
+        else if (y + this.ship.collBox.height > CANVAS_HEIGHT) {
+            y = CANVAS_HEIGHT - this.ship.collBox.height;
+        }
+
+        this.ship.collBox.x = x;
+        this.ship.collBox.y = y;
+        
+        return;
+
         if (moveUp) {
             this.ship.collBox.x = x;
             this.ship.collBox.y = y - 1;
@@ -308,19 +360,61 @@ class SpaceshipGame {
             bossCollBox.y + bossCollBox.height / 2, 0, 0), BOSS_PROJECTILE_URLS, "bottomright"));
                     
         return projectiles;
+        
     }
+
     //createBossProjectile(shipCollBox) {
     //    return new BossProjectile(new CollisionBox(shipCollBox.x + shipCollBox.width + 3, 
     //                                                         shipCollBox.y + shipCollBox.height / 2, 0, 0), BOSS_PROJECTILE_URLS);
     //}
 
+    handleKeyDown(event) {
+        // Update key states when keys are pressed
+        switch (event.key) {
+            case 'ArrowUp':
+                this.keys.ArrowUp = true;
+                break;
+            case 'ArrowDown':
+                this.keys.ArrowDown = true;
+                break;
+            case 'ArrowLeft':
+                this.keys.ArrowLeft = true;
+                break;
+            case 'ArrowRight':
+                this.keys.ArrowRight = true;
+                break;
+        }
+    }
+
+    handleKeyUp(event) {
+        // Update key states when keys are released
+        switch (event.key) {
+            case 'ArrowUp':
+                this.keys.ArrowUp = false;
+                break;
+            case 'ArrowDown':
+                this.keys.ArrowDown = false;
+                break;
+            case 'ArrowLeft':
+                this.keys.ArrowLeft = false;
+                break;
+            case 'ArrowRight':
+                this.keys.ArrowRight = false;
+                break;
+        }
+    }
+    
+
     
 }
   
+
+
 window.onload = function() {
     const game = new SpaceshipGame('canvas', '#FF0000');
     game.start();
 };
+
 
 
 //animations!!!!!!!!!!
@@ -387,7 +481,7 @@ class Boss {
         this.collBox.y += this.dy;
 
         const buffer = 10;
-        if (this.collBox.x <= 200 || this.collBox.x >= 1520){
+        if (this.collBox.x <= 50 || this.collBox.x >= 1520){
             this.dx = -signOf(this.dx) * (getRandomInt(5) + 3);
             this.collBox.x += this.dx > 0 ? buffer : -buffer;
             //this.dy = getRandomInt(11) - 6;
@@ -518,7 +612,7 @@ class Projectile {
         //ctx.fillStyle = "red";
         //ctx.fillRect(this.collBox.x, this.collBox.y, this.collBox.width, this.collBox.height);
         //drawing over the coll box using its topleft cords
-        this.collBox.x += 5;
+        this.collBox.x += 10;
     }
     removeCondition() {
         return (this.collBox.x >= 2000 || this.collBox.x <= -100 || this.collBox.y >= 1100 || this.collBox.y <= -100);
@@ -613,3 +707,4 @@ function rotateAsset(ctx, x, y, width, height, angle, image) {
     ctx.drawImage(image, x, y);
     his.ctx.restore();  // Restore context state`
 }
+

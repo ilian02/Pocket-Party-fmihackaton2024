@@ -30,44 +30,31 @@
             localStorage.setItem('user_id', '{{ user_id }}');
         }
 
-        let url = `ws://${window.location.host}/ws/socket-server/`
+        let url = `ws://${window.location.host}/ws/sender/`
         const controlSocket = new WebSocket(url)
-        controlSocket.onmessage = function(e) {
-            let data = JSON.parse(e.data)
-            console.log("data: ", data)
+
+        controlSocket.onopen = function(e) {
+            controlSocket.send(JSON.stringify({
+                'message_type': 'connected_controller', 
+                'user_id':  "{{ user_id }}", 
+                'lobby_id': "{{ lobby_id }}"}))
         }
 
-        function up() {
-            console.log('up')
-            controlSocket.send(JSON.stringify({'message_type': 'movement','message': 'up', 'user_id': localStorage.getItem('user_id')}))
-        }
-
-        function left() {
-            console.log('left')
-            controlSocket.send(JSON.stringify({'message_type': 'movement','message': 'left', 'user_id': localStorage.getItem('user_id')}))
-        }
-
-        function right() {
-            console.log('right')
-            controlSocket.send(JSON.stringify({'message_type': 'movement','message': 'right', 'user_id': localStorage.getItem('user_id')}))
-        }
-
-        function down() {
-            console.log('down')
-            controlSocket.send(JSON.stringify({'message_type': 'movement','message': 'down', 'user_id': localStorage.getItem('user_id')}))
+        function send_direction(dir) {
+            controlSocket.send(JSON.stringify({'message_type': 'movement','direction': dir, 'lobby_id': "{{ lobby_id }}"}))
         }
     </script>
 
     <div id="game-buttons">
         <div class="btn-row ">
-        <div id="up-btn" class="game-btn" onclick="up()"></div>
+        <div id="up-btn" class="game-btn" onclick="send_direction('up')"></div>
     </div>
         <div class="btn-row middle">
-            <div id="left-btn" class="game-btn" onclick="left()"></div>
-            <div id="right-btn" class="game-btn" onclick="right()"></div>
+            <div id="left-btn" class="game-btn" onclick="send_direction('left')"></div>
+            <div id="right-btn" class="game-btn" onclick="send_direction('right')"></div>
         </div>
         <div class="btn-row">
-        <div id="down-btn" class="game-btn" onclick="down()"></div>
+        <div id="down-btn" class="game-btn" onclick="send_direction('down')"></div>
     </div>
     </div>
 </main>

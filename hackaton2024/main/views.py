@@ -17,8 +17,8 @@ def lobbies(request):
 def join_lobby(request):
     # print(request.POST.get('lobby_id'))
     user_id = random.randint(10000, 1000000)
-    print(user_id)
-    print(request.POST.get('lobby_id'))
+    # print(user_id)
+    # print(request.POST.get('lobby_id'))
     return render(request, 'controlers.html', {'user_id': user_id, 'lobby_id': request.POST.get('lobby_id')})
 
 def create_lobby(request):
