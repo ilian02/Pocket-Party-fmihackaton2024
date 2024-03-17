@@ -1,5 +1,6 @@
 const UP_BOUND = 200;
 const DOWN_BOUND = 880;
+const FPS_CAP = 60;
 let moveUp = true
 
 const SHIP_PROJECTILE_URLS = ["./assets/extras/projectiles/projectile1.png", 
@@ -34,96 +35,126 @@ class SpaceshipGame {
     }
   
     update() {
+        let deleteAsteroidsIndexes = [];
+
+
         this.tick += 1;
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
         this.ctx.drawImage(this.backgroundImage, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
         this.moveShip(this.ship.collBox.x, this.ship.collBox.y);
         this.ship.draw(this.ctx);
 
+
+        if (this.tick <= 0 * FPS_CAP) {
+                //Spawning and moving asteroids
+            if (getRandomInt(100) <= 10) {
+                for(let asteroid of this.createAsteroids()){
+                    this.asteroids.push(asteroid);
+                }               
+            }          
+
+            let deleteAsteroidsIndexes = []
+            for (let asteroid of this.asteroids) {
+
+                //console.log(asteroid.collBox.r);
+                if (asteroid.removeCondition()) {
+                    deleteAsteroidsIndexes.push(this.asteroids.indexOf(asteroid));
+                }
+                asteroid.draw(this.ctx);
+                asteroid.rotation += asteroid.rotationSpeed;
+                
+                if (this.ship.collBox.collidesWith(asteroid.collBox)) {
+                    console.log("collides");
+                    deleteAsteroidsIndexes.push(this.asteroids.indexOf(asteroid));
+                }
+            }
+            //console.log(this.asteroids.length);
+            for (let index of deleteAsteroidsIndexes.reverse()) {
+                this.asteroids.splice(index, 1);
+            }
+
+        }
+        else if (this.asteroids.length != 0) { 
+            for (let asteroid of this.asteroids) {
+
+                //console.log(asteroid.collBox.r);
+                if (asteroid.removeCondition()) {
+                    deleteAsteroidsIndexes.push(this.asteroids.indexOf(asteroid));
+                }
+                asteroid.draw(this.ctx);
+                asteroid.rotation += asteroid.rotationSpeed;
+                
+                if (this.ship.collBox.collidesWith(asteroid.collBox)) {
+                    console.log("collides");
+                    deleteAsteroidsIndexes.push(this.asteroids.indexOf(asteroid));
+                }
+            }
+            //console.log(this.asteroids.length);
+            for (let index of deleteAsteroidsIndexes.reverse()) {
+                this.asteroids.splice(index, 1);
+            }
+        }
+        else {
+            console.log("boss time");
+            //boss projectile spawning
+            if ((this.tick + 10) % 120 == 0) {
+                for(let projectile of this.createBossAttack(this.boss.collBox)) {
+                    this.bossProjectiles.push(projectile);
+                }
+            }
+
+            let deleteBossProjectilesIndexes = []
+            for (let projectile of this.bossProjectiles) {
+
+                //console.log(asteroid.collBox.r);
+                if (projectile.removeCondition()) {
+                    deleteBossProjectilesIndexes.push(this.bossProjectiles.indexOf(projectile));
+                }
+                projectile.draw(this.ctx);
+                
+                //if (this.ship.collBox.collidesWith(asteroid.collBox)) {
+                    //console.log("collides");
+                    //deleteAsteroidsIndexes.push(this.asteroids.indexOf(asteroid));
+                //}
+            }
+
+            for (let index of deleteBossProjectilesIndexes.reverse()) {
+                this.bossProjectiles.splice(index, 1);
+            }
+            //boss
+            this.boss.draw(this.ctx);
+            //spawn ship projectiles
+            if (this.tick % 60 == 0) {
+                this.projectiles.push(this.createShipProjectile(this.ship.collBox));
+            }
+
+            let deleteProjectilesIndexes = []
+            for (let projectile of this.projectiles) {
+
+                //console.log(asteroid.collBox.r);
+                if (projectile.removeCondition()) {
+                    deleteProjectilesIndexes.push(this.projectiles.indexOf(projectile));
+                }
+                projectile.draw(this.ctx);
+                
+                //if (this.ship.collBox.collidesWith(asteroid.collBox)) {
+                    //console.log("collides");
+                    //deleteAsteroidsIndexes.push(this.asteroids.indexOf(asteroid));
+                //}
+            }
+
+            for (let index of deleteProjectilesIndexes.reverse()) {
+                this.projectiles.splice(index, 1);
+            }
+
         
-
-        ///////////////////////////////////////
-        if ((this.tick + 10) % 120 == 0) {
-            for(let projectile of this.createBossAttack(this.boss.collBox)) {
-                this.bossProjectiles.push(projectile);
-            }
-        }
-
-        let deleteBossProjectilesIndexes = []
-        for (let projectile of this.bossProjectiles) {
-
-            //console.log(asteroid.collBox.r);
-            if (projectile.removeCondition()) {
-                deleteBossProjectilesIndexes.push(this.bossProjectiles.indexOf(projectile));
-            }
-            projectile.draw(this.ctx);
-            
-            //if (this.ship.collBox.collidesWith(asteroid.collBox)) {
-                //console.log("collides");
-                //deleteAsteroidsIndexes.push(this.asteroids.indexOf(asteroid));
-            //}
-        }
-
-        for (let index of deleteBossProjectilesIndexes.reverse()) {
-            this.bossProjectiles.splice(index, 1);
-        }
-        /////////////////////////////////////
-        this.boss.draw(this.ctx);
-        ///////////////////////////////////////
-        if (this.tick % 60 == 0) {
-            this.projectiles.push(this.createShipProjectile(this.ship.collBox));
-        }
-
-        let deleteProjectilesIndexes = []
-        for (let projectile of this.projectiles) {
-
-            //console.log(asteroid.collBox.r);
-            if (projectile.removeCondition()) {
-                deleteProjectilesIndexes.push(this.projectiles.indexOf(projectile));
-            }
-            projectile.draw(this.ctx);
-            
-            //if (this.ship.collBox.collidesWith(asteroid.collBox)) {
-                //console.log("collides");
-                //deleteAsteroidsIndexes.push(this.asteroids.indexOf(asteroid));
-            //}
-        }
-
-        for (let index of deleteProjectilesIndexes.reverse()) {
-            this.projectiles.splice(index, 1);
-        }
-
-        /////////////////////////////////////
-        if (getRandomInt(100) <= 10) {
-            for(let asteroid of this.createAsteroids()){
-                this.asteroids.push(asteroid);
-            }
-            
         }
         
-        let deleteAsteroidsIndexes = []
-        for (let asteroid of this.asteroids) {
-
-            //console.log(asteroid.collBox.r);
-            if (asteroid.removeCondition()) {
-                deleteAsteroidsIndexes.push(this.asteroids.indexOf(asteroid));
-            }
-            asteroid.draw(this.ctx);
-            asteroid.rotation += asteroid.rotationSpeed;
-            
-            if (this.ship.collBox.collidesWith(asteroid.collBox)) {
-                console.log("collides");
-                deleteAsteroidsIndexes.push(this.asteroids.indexOf(asteroid));
-            }
-        }
-        //console.log(this.asteroids.length);
-        for (let index of deleteAsteroidsIndexes.reverse()) {
-            this.asteroids.splice(index, 1);
-        }
+        
     }
     
     start() {
-        this.intervalId = setInterval(this.update.bind(this), 1000 / 60);
+        this.intervalId = setInterval(this.update.bind(this), 1000 / FPS_CAP);
         //window.addEventListener('keydown', this.moveShip); // Add event listener for keydown
     }
   
@@ -171,23 +202,23 @@ class SpaceshipGame {
 
     createBossAttack(bossCollBox){
         let projectiles = [];
-        projectiles.push(new BossProjectile(new CollisionBox(bossCollBox.x + bossCollBox.width + 3, 
+        projectiles.push(new BossProjectile(new CollisionBox(bossCollBox.x + bossCollBox.width / 2, 
             bossCollBox.y + bossCollBox.height / 2, 0, 0), BOSS_PROJECTILE_URLS, "right"));
-        projectiles.push(new BossProjectile(new CollisionBox(bossCollBox.x - 3, 
+        projectiles.push(new BossProjectile(new CollisionBox(bossCollBox.x + bossCollBox.width / 2, 
             bossCollBox.y + bossCollBox.height / 2, 0, 0), BOSS_PROJECTILE_URLS, "left"));
         projectiles.push(new BossProjectile(new CollisionBox(bossCollBox.x + bossCollBox.width / 2, 
-            bossCollBox.y - 3, 0, 0), BOSS_PROJECTILE_URLS, "top"));
+            bossCollBox.y + bossCollBox.height / 2, 0, 0), BOSS_PROJECTILE_URLS, "top"));
         projectiles.push(new BossProjectile(new CollisionBox(bossCollBox.x + bossCollBox.width / 2, 
-            bossCollBox.y + bossCollBox.height + 3, 0, 0), BOSS_PROJECTILE_URLS, "bottom"));
+            bossCollBox.y + bossCollBox.height / 2, 0, 0), BOSS_PROJECTILE_URLS, "bottom"));
         
-        projectiles.push(new BossProjectile(new CollisionBox(bossCollBox.x + 2, 
-            bossCollBox.y + 2, 0, 0), BOSS_PROJECTILE_URLS, "topleft"));
-        projectiles.push(new BossProjectile(new CollisionBox(bossCollBox.x + bossCollBox.width - 2, 
-            bossCollBox.y + 2, 0, 0), BOSS_PROJECTILE_URLS, "topright"));
-        projectiles.push(new BossProjectile(new CollisionBox(bossCollBox.x + 2, 
-            bossCollBox.y + bossCollBox.height - 2, 0, 0), BOSS_PROJECTILE_URLS, "bottomleft"));
-        projectiles.push(new BossProjectile(new CollisionBox(bossCollBox.x + bossCollBox.width - 2, 
-            bossCollBox.y + bossCollBox.height - 2, 0, 0), BOSS_PROJECTILE_URLS, "bottomright"));
+        projectiles.push(new BossProjectile(new CollisionBox(bossCollBox.x + bossCollBox.width / 2, 
+            bossCollBox.y + bossCollBox.height / 2, 0, 0), BOSS_PROJECTILE_URLS, "topleft"));
+        projectiles.push(new BossProjectile(new CollisionBox(bossCollBox.x + bossCollBox.width / 2, 
+            bossCollBox.y + bossCollBox.height / 2, 0, 0), BOSS_PROJECTILE_URLS, "topright"));
+        projectiles.push(new BossProjectile(new CollisionBox(bossCollBox.x + bossCollBox.width / 2, 
+            bossCollBox.y + bossCollBox.height / 2, 0, 0), BOSS_PROJECTILE_URLS, "bottomleft"));
+        projectiles.push(new BossProjectile(new CollisionBox(bossCollBox.x + bossCollBox.width / 2, 
+            bossCollBox.y + bossCollBox.height / 2, 0, 0), BOSS_PROJECTILE_URLS, "bottomright"));
                     
         return projectiles;
     }
@@ -256,7 +287,7 @@ class Boss {
         this.collBox.x += this.dx;
         this.collBox.y += this.dy;
 
-        if (this.collBox.x <= 20 || this.collBox.x >= 1560){
+        if (this.collBox.x <= 200 || this.collBox.x >= 1560){
             this.dx = -signOf(this.dx) * (getRandomInt(5) + 3);
             this.dy = getRandomInt(11) - 6;
         }
