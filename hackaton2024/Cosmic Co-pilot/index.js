@@ -70,7 +70,7 @@ class SpaceshipGame {
     }
   
     update() {
-        const shipSpeed = 5;
+        const shipSpeed = 7;
         if (this.keys.ArrowUp) {
             this.moveShip(this.ship.collBox.x, this.ship.collBox.y - shipSpeed);
         }
@@ -92,12 +92,12 @@ class SpaceshipGame {
         this.ctx.drawImage(this.backgroundImage, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
         
         if (this.ship.lives <= 0) {
-            this.ctx.drawImage(this.defeatImage, 600, 300);
+            this.ctx.drawImage(this.defeatImage, 535, 340);
         }
         else if (this.boss.health <= 0) {
-            this.ctx.drawImage(this.victoryImage, 100, 300);
+            this.ctx.drawImage(this.victoryImage, 482, 340);
         }
-        else if (this.tick <= 10 * FPS_CAP) {
+        else if (this.tick <= 0 * FPS_CAP) {
                 //Spawning and moving asteroids
             if (getRandomInt(100) <= 10) {
                 for(let asteroid of this.createAsteroids()){
@@ -440,8 +440,8 @@ class Ship {
         //console.log("img height" + this.collBox.height);
 
         ctx.drawImage(this.image, this.collBox.x, this.collBox.y, this.collBox.width, this.collBox.height);
-        ctx.fillStyle = "red";
-        ctx.fillRect(this.collBox.x, this.collBox.y, this.collBox.width, this.collBox.height);
+        //ctx.fillStyle = "red";
+        //ctx.fillRect(this.collBox.x, this.collBox.y, this.collBox.width, this.collBox.height);
         //drawing over the coll box using its topleft cords
         //ctx.drawImage(this.heartImage, 20, 20);
         //ctx.fillStyle = "red";
@@ -481,7 +481,7 @@ class Boss {
         this.collBox.y += this.dy;
 
         const buffer = 10;
-        if (this.collBox.x <= 200 || this.collBox.x >= 1520){
+        if (this.collBox.x <= 50 || this.collBox.x >= 1520){
             this.dx = -signOf(this.dx) * (getRandomInt(5) + 3);
             this.collBox.x += this.dx > 0 ? buffer : -buffer;
             //this.dy = getRandomInt(11) - 6;
@@ -612,7 +612,7 @@ class Projectile {
         //ctx.fillStyle = "red";
         //ctx.fillRect(this.collBox.x, this.collBox.y, this.collBox.width, this.collBox.height);
         //drawing over the coll box using its topleft cords
-        this.collBox.x += 5;
+        this.collBox.x += 10;
     }
     removeCondition() {
         return (this.collBox.x >= 2000 || this.collBox.x <= -100 || this.collBox.y >= 1100 || this.collBox.y <= -100);
