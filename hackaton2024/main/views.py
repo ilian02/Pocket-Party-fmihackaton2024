@@ -37,6 +37,7 @@ def leave_lobby(request):
     lobbies = lobby_manager.get_current_lobbies()
     return render(request, 'lobbies_library.html', {'lobbies': lobbies})
 
-
+def waitroom(request):
+    return render(request, 'waitroom.html', {'waitroom': waitroom})
 
     
