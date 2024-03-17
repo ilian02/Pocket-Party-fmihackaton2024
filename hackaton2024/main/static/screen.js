@@ -708,3 +708,7 @@ function rotateAsset(ctx, x, y, width, height, angle, image) {
     his.ctx.restore();  // Restore context state`
 }
 
+function getCords() {
+    
+}
+
