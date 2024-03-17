@@ -1,7 +1,13 @@
 const UP_BOUND = 200;
 const DOWN_BOUND = 880;
 const FPS_CAP = 60;
-let moveUp = true
+
+const HEALTH_BAR_WIDTH = 420;
+const HEALTH_BAR_HEIGHT = 48;
+
+const MAX_BOSS_HEALTH = 100;
+
+let moveUp = true;
 
 const SHIP_PROJECTILE_URLS = ["./assets/extras/projectiles/projectile1.png", 
                                 "./assets/extras/projectiles/projectile2.png", 
@@ -26,6 +32,9 @@ class SpaceshipGame {
         this.backgroundImage.src = "./assets/backgrounds/im3.png";
 
         this.ship = new Ship(new CollisionBox(200, 500, 10, 10), "./assets/Ship6/Ship6.png");
+        this.shipIsVulnerable = true;
+        this.shipIsVulnerableTimer = 0;
+        
         
         this.boss = new Boss(new CollisionBox(1200, 340, 0, 0), "./assets/extras/boss/boss2.png");
 
@@ -37,15 +46,11 @@ class SpaceshipGame {
     update() {
         let deleteAsteroidsIndexes = [];
 
-
         this.tick += 1;
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
         this.ctx.drawImage(this.backgroundImage, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-        this.moveShip(this.ship.collBox.x, this.ship.collBox.y);
-        this.ship.draw(this.ctx);
-
-
-        if (this.tick <= 20 * FPS_CAP) {
+        
+        if (this.tick <= 0 * FPS_CAP) {
                 //Spawning and moving asteroids
             if (getRandomInt(100) <= 10) {
                 for(let asteroid of this.createAsteroids()){
@@ -66,6 +71,13 @@ class SpaceshipGame {
                 if (this.ship.collBox.collidesWith(asteroid.collBox)) {
                     console.log("collides");
                     deleteAsteroidsIndexes.push(this.asteroids.indexOf(asteroid));
+                    if (this.shipIsVulnerable) {
+                        this.ship.lives -= 1;
+                        this.shipIsVulnerable = false;
+                        this.shipIsVulnerableTimer = this.tick + 60;
+                    }
+
+
                 }
             }
             //console.log(this.asteroids.length);
@@ -87,6 +99,11 @@ class SpaceshipGame {
                 if (this.ship.collBox.collidesWith(asteroid.collBox)) {
                     console.log("collides");
                     deleteAsteroidsIndexes.push(this.asteroids.indexOf(asteroid));
+                    if (this.shipIsVulnerable) {
+                        this.ship.lives -= 1;
+                        this.shipIsVulnerable = false;
+                        this.shipIsVulnerableTimer = this.tick + 60;
+                    }
                 }
             }
             //console.log(this.asteroids.length);
@@ -110,12 +127,20 @@ class SpaceshipGame {
                 if (projectile.removeCondition()) {
                     deleteBossProjectilesIndexes.push(this.bossProjectiles.indexOf(projectile));
                 }
+
                 projectile.draw(this.ctx);
+
+                if (this.ship.collBox.collidesWith(projectile.collBox)) {
+                    console.log("shoot boss collision");
+                    deleteBossProjectilesIndexes.push(this.bossProjectiles.indexOf(projectile));
+                    if (this.shipIsVulnerable) {
+                        this.ship.lives -= 1;
+                        this.shipIsVulnerable = false;
+                        this.shipIsVulnerableTimer = this.tick + 60;
+                    }
+                }
                 
-                //if (this.ship.collBox.collidesWith(asteroid.collBox)) {
-                    //console.log("collides");
-                    //deleteAsteroidsIndexes.push(this.asteroids.indexOf(asteroid));
-                //}
+                
             }
 
             for (let index of deleteBossProjectilesIndexes.reverse()) {
@@ -123,6 +148,7 @@ class SpaceshipGame {
             }
             //boss
             this.boss.draw(this.ctx);
+            this.boss.drawHealthBar(this.ctx);
             //spawn ship projectiles
             if (this.tick % 60 == 0) {
                 this.projectiles.push(this.createShipProjectile(this.ship.collBox));
@@ -137,10 +163,11 @@ class SpaceshipGame {
                 }
                 projectile.draw(this.ctx);
                 
-                //if (this.ship.collBox.collidesWith(asteroid.collBox)) {
-                    //console.log("collides");
-                    //deleteAsteroidsIndexes.push(this.asteroids.indexOf(asteroid));
-                //}
+                if (this.boss.collBox.collidesWith(projectile.collBox)) {
+                    console.log("shoot boss collision");
+                    deleteProjectilesIndexes.push(this.projectiles.indexOf(projectile));
+                    this.boss.health -= 5;
+                }
             }
 
             for (let index of deleteProjectilesIndexes.reverse()) {
@@ -150,7 +177,19 @@ class SpaceshipGame {
         
         }
         
-        
+        if (this.tick > this.shipIsVulnerableTimer)
+            this.shipIsVulnerable = true;
+
+        if (this.ship.collBox.collidesWith(this.boss.collBox)) {
+            if (this.shipIsVulnerable) {
+                this.ship.lives -= 1;
+                this.shipIsVulnerable = false;
+                this.shipIsVulnerableTimer = this.tick + 60;
+            }
+        }
+            
+        this.moveShip(this.ship.collBox.x, this.ship.collBox.y);
+        this.ship.draw(this.ctx);
     }
     
     start() {
@@ -169,7 +208,7 @@ class SpaceshipGame {
     }
 
     moveShip(x, y) {
-        if(moveUp) {
+        if (moveUp) {
             this.ship.collBox.x = x;
             this.ship.collBox.y = y - 1;
         }
@@ -177,7 +216,7 @@ class SpaceshipGame {
             this.ship.collBox.x = x;
             this.ship.collBox.y = y + 1;
         }
-        if(this.ship.collBox.y <= UP_BOUND || this.ship.collBox.y >= DOWN_BOUND) {
+        if (this.ship.collBox.y <= UP_BOUND || this.ship.collBox.y >= DOWN_BOUND) {
             moveUp = !moveUp;
         }
     }
@@ -185,7 +224,7 @@ class SpaceshipGame {
     createAsteroids() {
         let n = getRandomInt(10) - 8;
         let asteroids = []
-        if(n < 0)
+        if (n < 0)
             return asteroids;
         for(let i=0; i<n; i++) {
             asteroids.push(new Asteroid(new CollisionBox(2000, getRandomInt(1080 + 480) - 200, 0, 0), getRandomAsteroidURL(), 
@@ -263,10 +302,10 @@ class Ship {
         //ctx.fillRect(this.collBox.x, this.collBox.y, this.collBox.width, this.collBox.height);
         //drawing over the coll box using its topleft cords
         //ctx.drawImage(this.heartImage, 20, 20);
-        ctx.fillStyle = "red";
+        //ctx.fillStyle = "red";
         for (let i = 0; i < this.lives; i++) {
-            ctx.fillRect(60 + i * 70, 50, 50, 50);
-
+            ctx.drawImage(this.heartImage, 60 + i * 70, 50);
+            //ctx.fillRect(60 + i * 70, 50, 50, 50);
         }
 
     }
@@ -287,6 +326,9 @@ class Boss {
             this.collBox.height = this.image.naturalHeight;
         }
 
+        this.health = MAX_BOSS_HEALTH;
+        this.healthBarWidth = HEALTH_BAR_WIDTH - 16;
+
     }
     draw(ctx, shipCollBox) {
 
@@ -305,6 +347,29 @@ class Boss {
             this.dy = -signOf(this.dy) * (getRandomInt(5) + 3);
             this.dx = getRandomInt(11) - 6;
         }
+
+    }
+
+    drawHealthBar(ctx) {
+        ctx.fillStyle = "grey";
+        ctx.fillRect(1440, 50, HEALTH_BAR_WIDTH, HEALTH_BAR_HEIGHT);
+
+        if (this.health > 70)
+            ctx.fillStyle = "#33cc33";
+        else if (this.health > 40)
+            ctx.fillStyle = "#e6e600";
+        else if (this.health > 20)
+            ctx.fillStyle = "#ff9200";
+        else if (this.health > 0)
+            ctx.fillStyle = "#d90000";
+        else
+            return;
+            
+
+
+        ctx.fillRect(1448, 58, this.healthBarWidth, HEALTH_BAR_HEIGHT - 16);
+        this.healthBarWidth = (this.health / MAX_BOSS_HEALTH) * (HEALTH_BAR_WIDTH - 16);
+
 
     }
 }
@@ -438,27 +503,27 @@ class BossProjectile {
         //ctx.fillStyle = "red";
         //ctx.fillRect(this.collBox.x, this.collBox.y, this.collBox.width, this.collBox.height);
         //drawing over the coll box using its topleft cords
-        if(this.type == "left")
+        if (this.type == "left")
             this.collBox.x -= 7;
-        else if(this.type == "right")
+        else if (this.type == "right")
             this.collBox.x += 7;
-        else if(this.type == "top")
+        else if (this.type == "top")
             this.collBox.y -= 7;
-        else if(this.type == "bottom")
+        else if (this.type == "bottom")
             this.collBox.y += 7;
-        else if(this.type == "topleft") {
+        else if (this.type == "topleft") {
             this.collBox.x -= 5;
             this.collBox.y -= 5;
         }
-        else if(this.type == "topright") {
+        else if (this.type == "topright") {
             this.collBox.x += 5;
             this.collBox.y -= 5;
         }
-        else if(this.type == "bottomleft") {
+        else if (this.type == "bottomleft") {
             this.collBox.x -= 5;
             this.collBox.y += 5;
         }
-        else if(this.type == "bottomright") {
+        else if (this.type == "bottomright") {
             this.collBox.x += 5;
             this.collBox.y += 5;
         }
