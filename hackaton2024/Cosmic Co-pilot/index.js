@@ -34,6 +34,7 @@ class SpaceshipGame {
         this.ship = new Ship(new CollisionBox(200, 500, 10, 10), "./assets/Ship6/Ship6.png");
         this.shipIsVulnerable = true;
         this.shipIsVulnerableTimer = 0;
+        this.deliverTheBoss = true;
         
         
         this.boss = new Boss(new CollisionBox(1200, 340, 0, 0), "./assets/extras/boss/boss2.png");
@@ -41,6 +42,17 @@ class SpaceshipGame {
         this.asteroids = [];
         this.projectiles = [];
         this.bossProjectiles = [];
+
+        this.bossDeliverX = 1920;
+        this.bossImage = new Image();
+        this.bossImage.src = "./assets/extras/boss/boss2.png";
+        this.angle = 0;
+
+        this.victoryImage = new Image();
+        this.defeatImage = new Image();
+
+        this.victoryImage.src = "./assets/extras/03.png";
+        this.defeatImage.src = "./assets/extras/03.png";
     }
   
     update() {
@@ -50,7 +62,13 @@ class SpaceshipGame {
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
         this.ctx.drawImage(this.backgroundImage, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
         
-        if (this.tick <= 0 * FPS_CAP) {
+        if (this.ship.lives <= 0) {
+            this.ctx.drawImage(this.victoryImage, 600, 300);
+        }
+        else if (this.boss.health <= 0) {
+            this.ctx.drawImage(this.defeatImage, 100, 300);
+        }
+        else if (this.tick <= 0 * FPS_CAP) {
                 //Spawning and moving asteroids
             if (getRandomInt(100) <= 10) {
                 for(let asteroid of this.createAsteroids()){
@@ -85,6 +103,9 @@ class SpaceshipGame {
                 this.asteroids.splice(index, 1);
             }
 
+            this.moveShip(this.ship.collBox.x, this.ship.collBox.y);
+            this.ship.draw(this.ctx);
+
         }
         else if (this.asteroids.length != 0) { 
             for (let asteroid of this.asteroids) {
@@ -110,6 +131,29 @@ class SpaceshipGame {
             for (let index of deleteAsteroidsIndexes.reverse()) {
                 this.asteroids.splice(index, 1);
             }
+            this.moveShip(this.ship.collBox.x, this.ship.collBox.y);
+            this.ship.draw(this.ctx);
+        }
+        else if(this.deliverTheBoss) {
+            let rotation = 0.01;
+            this.angle += rotation;
+            console.log("deliver boss");
+            this.ctx.drawImage(this.bossImage, this.bossDeliverX, 340);
+            this.bossDeliverX -= 1;
+
+            //rotateAsset(this.ctx, this.deliverTheBossx, 340, this.boss.collBox.width, this.boss.collBox.height, this.angle, this.bossImage);
+
+            // this.ctx.save();  // Save context state for later restoration
+            // this.ctx.translate(this.bossDeliverX + this.boss.collBox.width / 2, 340 + this.boss.collBox.height / 2);  // Translate to center
+            // this.ctx.rotate(this.angle);  // Apply rotation
+            // this.ctx.drawImage(this.bossImage, this.bossDeliverX + this.boss.collBox.width / 2, 340 + this.boss.collBox.height / 2);
+            // this.ctx.restore();  // Restore context state`
+            
+            if (this.bossDeliverX <= 1200)
+                this.deliverTheBoss = false;
+
+            this.moveShip(this.ship.collBox.x, this.ship.collBox.y);
+            this.ship.draw(this.ctx);
         }
         else {
             console.log("boss time");
@@ -174,8 +218,13 @@ class SpaceshipGame {
                 this.projectiles.splice(index, 1);
             }
 
+            this.moveShip(this.ship.collBox.x, this.ship.collBox.y);
+            this.ship.draw(this.ctx);
+
         
         }
+
+
         
         if (this.tick > this.shipIsVulnerableTimer)
             this.shipIsVulnerable = true;
@@ -188,8 +237,6 @@ class SpaceshipGame {
             }
         }
             
-        this.moveShip(this.ship.collBox.x, this.ship.collBox.y);
-        this.ship.draw(this.ctx);
     }
     
     start() {
@@ -554,4 +601,12 @@ function signOf(num){
     else {
         return -1;
     }
+}
+
+function rotateAsset(ctx, x, y, width, height, angle, image) {
+    ctx.save();  // Save context state for later restoration
+    ctx.translate(x + width / 2, y + height / 2);  // Translate to center
+    ctx.rotate(angle);  // Apply rotation
+    ctx.drawImage(image, x, y);
+    his.ctx.restore();  // Restore context state`
 }
