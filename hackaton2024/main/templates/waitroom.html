@@ -7,14 +7,15 @@
     <title>Lobby Page</title>
 </head>
 <body>
+  {% csrf_token %}
+  
   <div class="container">
     <h1>Your code: </h1>
-    <p class="code">12345 </p>
+    <p class="code">{{ lobby_id }} </p>
     <h2>Current players count: </h2>
     <p class="players-num">5 </p>
 
     <form action="create_lobby" method="post">
-      {% csrf_token %}
     <button class="leave-btn" type="submit"><span>Start game</button>
     </form>
 

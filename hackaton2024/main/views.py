@@ -22,9 +22,13 @@ def join_lobby(request):
     return render(request, 'controlers.html', {'user_id': user_id, 'lobby_id': request.POST.get('lobby_id')})
 
 def create_lobby(request):
-    new_lobby = lobby_manager.create_lobby()
+    print('creating')
+    # lobby_manager.create_lobby()
+    id = lobby_manager.create_lobby().id
     lobbies = lobby_manager.get_current_lobbies()
-    return render(request, 'host_screen.html', {'lobbies': lobbies, 'lobby_id': new_lobby.to_json()['id']})
+    print(id)
+    # print(lobbies)
+    return render(request, 'waitroom.html', {'lobbies': lobbies, 'lobby_id': id})
 
 def leave_lobby(request):
     print("leaving the lobby")
@@ -36,6 +40,7 @@ def leave_lobby(request):
     return render(request, 'lobbies_library.html', {'lobbies': lobbies})
 
 def waitroom(request):
+    lobby_manager.create_lobby()
     return render(request, 'waitroom.html', {'waitroom': waitroom})
 
     
