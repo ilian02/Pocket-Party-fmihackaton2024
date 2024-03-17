@@ -6,12 +6,20 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Lobbies</title>
-  <link rel="stylesheet" href="{% static 'main-style.css'%}">
+  <!-- <link rel="stylesheet" href="{% static 'main-style.css'%}"> -->
   <link rel="stylesheet" href="{% static 'buttons.css'%}">
 </head>
 
 <body>
-  <h1 id="title">Active lobbies</h1>
+  <div class="title-bar">
+    <form class="button" action="/">
+      <button class="leave-btn back-btn" type="submit">
+        <span>&larr; Back</span>
+      </button> 
+    </form>
+    <h1 class="title">Active lobbies</h1>
+  </div>
+<main>
   <div class="container">
     {% for lobby in lobbies  %}
     <li>
@@ -24,10 +32,9 @@
     {% endfor %}
     
   </div>
-  <form action="create_lobby" method="post">
-      {% csrf_token %}
+  <form action="waitroom">
       <button class="leave-btn create-lobby" type="submit"><span>Create new lobby</span></button>
   </form>
-
+</main>
 </body>
 </html>

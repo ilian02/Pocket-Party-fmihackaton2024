@@ -153,6 +153,10 @@ body{
     font-weight: 600;
    }
 
+   /* .back-btn {
+    position button on top left corner
+   } */
+
    /* buttons for the lobby */
 
    .lobby-btn {
@@ -206,4 +210,43 @@ body{
     align-items: center;
     justify-content: center;
     display: flex;
+  }
+
+  /* .nav-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.back-btn {
+margin-top: 10px;
+}
+.nav-bar .leave-btn {
+    order: -1; /* Move the button to the start of the flex container 
+  } */
+
+  .title-bar {
+    margin-bottom: 3%;
+    color: #fff;
+    display: flex;
+    position:relative;
+  }
+  
+  .title {
+    text-align: center;
+    font-size: 36px;
+    line-height: 180%;
+    flex:1 0 auto;
+  }
+  
+  .button{
+    position:absolute;
+    left:0;
+    top:0;
+  }
+
+  .lobby{
+    position:absolute;
+    right:0;
+    top:0;
   }

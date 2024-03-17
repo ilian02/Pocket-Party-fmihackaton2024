@@ -1,0 +1,24 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="{% static 'buttons.css'%}" /> 
+    <link rel="stylesheet" href="{% static 'style_waitroom.css'%}" /> 
+    <title>Lobby Page</title>
+</head>
+<body>
+  <div class="container">
+    <h1>Your code: </h1>
+    <p class="code">12345 </p>
+    <h2>Current players count: </h2>
+    <p class="players-num">5 </p>
+
+    <form action="create_lobby" method="post">
+      {% csrf_token %}
+    <button class="leave-btn" type="submit"><span>Start game</button>
+    </form>
+
+  </div>
+
+</body>
+</html>
