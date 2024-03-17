@@ -27,7 +27,7 @@ class SpaceshipGame {
 
         this.ship = new Ship(new CollisionBox(200, 500, 10, 10), "./assets/Ship6/Ship6.png");
         
-        this.boss = new Boss(new CollisionBox(1200, 340, 0, 0), "./assets/extras/boss.png");
+        this.boss = new Boss(new CollisionBox(1200, 340, 0, 0), "./assets/extras/boss/boss2.png");
 
         this.asteroids = [];
         this.projectiles = [];
@@ -45,7 +45,7 @@ class SpaceshipGame {
         this.ship.draw(this.ctx);
 
 
-        if (this.tick <= 0 * FPS_CAP) {
+        if (this.tick <= 20 * FPS_CAP) {
                 //Spawning and moving asteroids
             if (getRandomInt(100) <= 10) {
                 for(let asteroid of this.createAsteroids()){
@@ -248,9 +248,13 @@ class Ship {
             this.collBox.width = this.image.naturalWidth;
             this.collBox.height = this.image.naturalHeight;
         }
+        this.lives = 3;
+        this.heartImage = new Image();
+        this.heartImage.src = "./assets/extras/heart.png";
 
     }
     draw(ctx) {
+
         //console.log("img widht" + this.collBox.width);
         //console.log("img height" + this.collBox.height);
 
@@ -258,6 +262,12 @@ class Ship {
         //ctx.fillStyle = "red";
         //ctx.fillRect(this.collBox.x, this.collBox.y, this.collBox.width, this.collBox.height);
         //drawing over the coll box using its topleft cords
+        //ctx.drawImage(this.heartImage, 20, 20);
+        ctx.fillStyle = "red";
+        for (let i = 0; i < this.lives; i++) {
+            ctx.fillRect(60 + i * 70, 50, 50, 50);
+
+        }
 
     }
 }
