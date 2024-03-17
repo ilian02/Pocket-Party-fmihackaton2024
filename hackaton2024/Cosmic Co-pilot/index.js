@@ -69,7 +69,7 @@ class SpaceshipGame {
         else if (this.boss.health <= 0) {
             this.ctx.drawImage(this.victoryImage, 100, 300);
         }
-        else if (this.tick <= 0 * FPS_CAP) {
+        else if (this.tick <= 10 * FPS_CAP) {
                 //Spawning and moving asteroids
             if (getRandomInt(100) <= 10) {
                 for(let asteroid of this.createAsteroids()){
