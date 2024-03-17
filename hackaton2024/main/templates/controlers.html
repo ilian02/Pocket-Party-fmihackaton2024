@@ -10,6 +10,7 @@
 </head>
 
 <body>
+    <main>
     <form action="leave_lobby" method="post">
         {% csrf_token %}
         <button class="leave-btn" type="submit">
@@ -66,5 +67,6 @@
         <div id="down-btn" class="game-btn" onclick="down()"></div>
     </div>
     </div>
+</main>
 </body>
 </html>
