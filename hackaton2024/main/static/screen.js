@@ -10,15 +10,15 @@ const EPSILON = 1e-6;
 
 let moveUp = true;
 
-const SHIP_PROJECTILE_URLS = ["./assets/extras/projectiles/projectile1.png", 
-                                "./assets/extras/projectiles/projectile2.png", 
-                                "./assets/extras/projectiles/projectile3.png", 
-                                "./assets/extras/projectiles/projectile4.png"];
+const SHIP_PROJECTILE_URLS = ["./static/assets/extras/projectiles/projectile1.png", 
+                                "./static/assets/extras/projectiles/projectile2.png", 
+                                "./static/assets/extras/projectiles/projectile3.png", 
+                                "./static/assets/extras/projectiles/projectile4.png"];
 
-const BOSS_PROJECTILE_URLS = ["./assets/extras/projectiles/boss_projectile1.png", 
-                                "./assets/extras/projectiles/boss_projectile2.png", 
-                                "./assets/extras/projectiles/boss_projectile3.png", 
-                                "./assets/extras/projectiles/boss_projectile4.png"];
+const BOSS_PROJECTILE_URLS = ["./static/assets/extras/projectiles/boss_projectile1.png", 
+                                "./static/assets/extras/projectiles/boss_projectile2.png", 
+                                "./static/assets/extras/projectiles/boss_projectile3.png", 
+                                "./static/assets/extras/projectiles/boss_projectile4.png"];
 
 const CANVAS_WIDTH = 1920;
 const CANVAS_HEIGHT = 1080;
@@ -32,15 +32,15 @@ class SpaceshipGame {
         this.ctx = this.canvas.getContext('2d');
 
         this.backgroundImage = new Image();
-        this.backgroundImage.src = "./assets/backgrounds/im3.png";
+        this.backgroundImage.src = "./static/assets/backgrounds/im3.png";
 
-        this.ship = new Ship(new CollisionBox(200, 500, 10, 10), "./assets/Ship6/Ship6.png");
+        this.ship = new Ship(new CollisionBox(200, 500, 10, 10), "./static/assets/Ship6/Ship6.png");
         this.shipIsVulnerable = true;
         this.shipIsVulnerableTimer = 0;
         this.deliverTheBoss = true;
         
         
-        this.boss = new Boss(new CollisionBox(2000, 2000, 0, 0), "./assets/extras/boss/boss2.png");
+        this.boss = new Boss(new CollisionBox(2000, 2000, 0, 0), "./static/assets/extras/boss/boss2.png");
 
         this.asteroids = [];
         this.projectiles = [];
@@ -48,14 +48,14 @@ class SpaceshipGame {
 
         this.bossDeliverX = 1920;
         this.bossImage = new Image();
-        this.bossImage.src = "./assets/extras/boss/boss2.png";
+        this.bossImage.src = "./static/assets/extras/boss/boss2.png";
         this.angle = 0;
 
         this.victoryImage = new Image();
         this.defeatImage = new Image();
 
-        this.victoryImage.src = "./assets/extras/victory.png";
-        this.defeatImage.src = "./assets/extras/defeat.png";
+        this.victoryImage.src = "./static/assets/extras/victory.png";
+        this.defeatImage.src = "./static/assets/extras/defeat.png";
 
         window.addEventListener("keydown", this.handleKeyDown.bind(this));
         window.addEventListener("keyup", this.handleKeyUp.bind(this));
@@ -97,7 +97,7 @@ class SpaceshipGame {
         else if (this.boss.health <= 0) {
             this.ctx.drawImage(this.victoryImage, 482, 340);
         }
-        else if (this.tick <= 0 * FPS_CAP) {
+        else if (this.tick <= 10 * FPS_CAP) {
                 //Spawning and moving asteroids
             if (getRandomInt(100) <= 10) {
                 for(let asteroid of this.createAsteroids()){
@@ -431,7 +431,7 @@ class Ship {
         }
         this.lives = 3;
         this.heartImage = new Image();
-        this.heartImage.src = "./assets/extras/heart.png";
+        this.heartImage.src = "./static/assets/extras/heart.png";
 
     }
     draw(ctx) {
@@ -680,7 +680,7 @@ class BossProjectile {
 
 function getRandomAsteroidURL() {
     let asteroidNumber = getRandomInt(16) + 1;
-    return "./assets/comets/Picture" + asteroidNumber + ".png";
+    return "./static/assets/comets/Picture" + asteroidNumber + ".png";
 }
 
 function getRandomInt(max) {

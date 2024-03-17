@@ -43,4 +43,5 @@ def waitroom(request):
     lobby_manager.create_lobby()
     return render(request, 'waitroom.html', {'waitroom': waitroom})
 
-    
+def play(request):
+     return render(request, 'cosmic_co-pilot.html')

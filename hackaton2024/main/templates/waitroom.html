@@ -7,7 +7,7 @@
     <title>Lobby Page</title>
 </head>
 <body>
-  {% csrf_token %}
+  
   
   <div class="container">
     <h1>Your code: </h1>
@@ -15,8 +15,9 @@
     <h2>Current players count: </h2>
     <p class="players-num">5 </p>
 
-    <form action="create_lobby" method="post">
-    <button class="leave-btn" type="submit"><span>Start game</button>
+    <form action="cosmic_co-pilot" method="post">
+      {% csrf_token %}
+      <button class="leave-btn" type="submit"><span>Start game</button>
     </form>
 
   </div>
