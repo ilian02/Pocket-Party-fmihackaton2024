@@ -1,0 +1,21 @@
+{
+    "lobbies": {},
+    "games": {
+        "56056": {
+            "game_id": "56056",
+            "ships": [
+                {
+                    "x": 0,
+                    "y": 0
+                }
+            ],
+            "players": [
+                {
+                    "user_id": "165208",
+                    "user_name": "asdf",
+                    "ready": true
+                }
+            ]
+        }
+    }
+}

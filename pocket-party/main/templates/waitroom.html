@@ -1,0 +1,96 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="{% static 'buttons.css'%}" /> 
+    <link rel="stylesheet" href="{% static 'style_waitroom.css'%}" /> 
+    <title>Lobby Page</title>
+</head>
+<body>
+  <div class="container">
+    <h1>Your code: </h1>
+    <p class="code">{{ lobby.id }} </p>
+    <h2>Current players count: </h2>
+    <p id="players-num"> {{ lobby.players | length }} </p>
+
+    <div id="player-list"></div>
+
+    <form action="{% url 'cosmic_co_pilot' game_id=lobby.id %}"
+          method="post">
+      {% csrf_token %}
+      <button class="leave-btn" type="submit"><span>Start game</button>
+    </form>
+
+  </div>
+
+</body>
+
+<script>
+  const lobbyId = "{{ lobby.id }}";
+  const socket = new WebSocket(`ws://${window.location.host}/ws/lobby/${lobbyId}`);
+
+  // Function to update player list
+  function addNewPlayer({ user_id, user_name }) {
+      const playerList = document.getElementById('player-list');
+      const playerCard = document.createElement('div');
+      playerCard.className = 'player-card player-not-ready';
+      playerCard.textContent = user_name;
+      playerCard.id = user_id
+      playerList.appendChild(playerCard);
+
+      const playersNum = document.getElementById('players-num');
+      playersNum.textContent = Number(playersNum.textContent) + 1
+  }
+
+  function removePlayer({ user_id }) {
+      const playerList = document.getElementById('player-list');
+      const playerToRemove = document.getElementById(user_id);
+
+      if (playerToRemove) {
+          playerList.removeChild(playerToRemove);
+          const playersNum = document.getElementById('players-num');
+          playersNum.textContent = Number(playersNum.textContent) - 1
+      }
+  }
+
+  function playerReady({ user_id }) {
+      const playerList = document.getElementById('player-list');
+      const playerCard = document.getElementById(user_id);
+
+      playerCard.className = 'player-card player-ready';
+  }
+
+  // TODO: if we try to go back ask for confirmation first, otherwise destroy the game
+
+  // Handle incoming WebSocket messages
+  socket.onmessage = function(event) {
+      const data = JSON.parse(event.data);
+      if (data.type === 'player_connected') {
+        addNewPlayer(data);
+      }
+      if (data.type === 'player_disconnected') {
+        removePlayer(data);
+      }    
+      if (data.type === 'player_ready') {
+        playerReady(data);
+      }
+  };
+
+  socket.onopen = function(e) {
+    // Example usage: Send a message to the server when the page loads
+    sendMessageToServer({ type: 'waitroom_connected' });
+  }
+
+  // Function to send a message to the server (for testing purposes)
+  function sendMessageToServer(message) {
+      socket.send(JSON.stringify(message));
+  }
+
+  window.onload = function() {
+    {% for player in lobby.players %}
+        addNewPlayer("{{ player }}");
+    {% endfor %}
+  }
+
+</script>
+</html>

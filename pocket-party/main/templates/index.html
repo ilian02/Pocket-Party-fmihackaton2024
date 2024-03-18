@@ -1,0 +1,36 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pocket Party</title>
+    <link rel="stylesheet" href="{% static 'styles_landing.css'%}" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Pocket Party</h1>
+      <h2>Join lobby</h2>
+      <div class="link-code">
+        <input type="text" name="to_lobby" placeholder="Enter game code" />
+        <form action="join_lobby">
+          <button class="button" data-text="Awesome">
+            <span class="actual-text">&nbsp;Join&nbsp;</span>
+            <span aria-hidden="true" class="hover-text">&nbsp;Join&nbsp;</span>
+          </button>
+        </form>
+      </div>
+      <div class="host-game">
+        <h3>or host a new game</h3>
+
+        <div class="button-container">
+          <form action="lobbies">
+            <button class="request-btn" type="submit">
+              <span>Lobbies library</span>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
