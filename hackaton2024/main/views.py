@@ -14,7 +14,9 @@ def lobbies(request):
 
 def join_lobby(request):
     user_id = random.randint(10000, 1000000)
-    return render(request, 'controlers.html', {'user_id': user_id, 'lobby_id': request.POST.get('lobby_id')})
+    lobby_id = int(request.POST.get('lobby_id'))
+    lobby_manager.add_user_to_lobby(user_id, lobby_id)
+    return render(request, 'controlers.html', {'user_id': user_id, 'lobby_id': lobby_id})
 
 def create_lobby(request):
     lobby = lobby_manager.create_lobby()
@@ -23,8 +25,10 @@ def create_lobby(request):
 def leave_lobby(request): 
     user_id = request.POST.get('user_id')
     lobby_id = request.POST.get('lobby_id')
-    lobby_manager.remove_user_from_lobby(user_id, lobby_id)
-    return render(request, 'lobbies_library.html', {'lobbies': lobbies})
+    if lobby_id in lobby_manager.get_current_lobbies():
+        lobby_manager.remove_user_from_lobby(user_id, lobby_id)
+
+    return render(request, 'lobbies_library.html', {'lobbies': lobby_manager.get_current_lobbies()})
 
 def waitroom(request):
     lobby_manager.create_lobby()

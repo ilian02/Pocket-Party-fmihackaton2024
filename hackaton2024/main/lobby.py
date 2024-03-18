@@ -11,6 +11,7 @@ class lobby():
         self.players = []
         self.shoot = False
         self.crashed = False
+        self.running = False
 
     def generate_id(self):
         self.id = random.randint(10000, 99999)

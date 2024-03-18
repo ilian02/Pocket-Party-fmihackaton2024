@@ -8,7 +8,7 @@ class lobbyManager:
     def create_lobby(self):
         new_lobby = lobby()
         self.lobbies[new_lobby.id] = new_lobby
-
+        print(f"Created lobby {new_lobby.id}")
         return new_lobby
     
     def delete_lobby(self, id):
@@ -19,7 +19,9 @@ class lobbyManager:
     
     def add_user_to_lobby(self, user_id, lobby_id):
         # Add checks
-        self.lobbies[lobby_id].players.add(user_id)
+        print(self.lobbies)
+
+        self.lobbies[lobby_id].players.append(user_id)
     
     def remove_user_from_lobby(self, user_id, lobby_id):
         # Add checks
@@ -27,5 +29,8 @@ class lobbyManager:
 
     def move_ship(self, user_id, lobby_id):
         pass
+
+    def get_lobby(self, id):
+        return self.lobbies[int(id)]
 
 lobby_manager = lobbyManager()
