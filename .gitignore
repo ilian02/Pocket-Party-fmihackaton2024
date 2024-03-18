@@ -1,2 +1,6 @@
 virtualenv/
 hackaton2024/main/db.json
+*.pyc
+__pycache__/
+*.pyo
+hackaton2024/db.sqlite3

@@ -1,34 +1,31 @@
 from .lobby import lobby
-import json
 
 class lobbyManager:
 
     def __init__(self):
-        self.lobbies = self.get_current_lobbies()
+        self.lobbies = {}
 
     def create_lobby(self):
         new_lobby = lobby()
-        current_lobbies = self.get_current_lobbies()
-        current_lobbies[new_lobby.id] = new_lobby.to_json()
-
-        with open('./main/db.json', 'w') as f:
-            json.dump(current_lobbies, f)
+        self.lobbies[new_lobby.id] = new_lobby
 
         return new_lobby
     
     def delete_lobby(self, id):
-        pass
+        self.lobbies.popitem(id)
 
     def get_current_lobbies(self):
-        lobbies = {}
-        
-        with open('./main/db.json') as f:
-            lobbies = json.load(f)
-
-        # print(lobbies)
-            
-        return lobbies
+        return self.lobbies
     
-    def save_current_lobbies(self):
-        with open('./main/db.json', 'w') as f:
-            json.dump(self.lobbies, f)
+    def add_user_to_lobby(self, user_id, lobby_id):
+        # Add checks
+        self.lobbies[lobby_id].players.add(user_id)
+    
+    def remove_user_from_lobby(self, user_id, lobby_id):
+        # Add checks
+        self.lobbies[lobby_id].players.remove(user_id)
+
+    def move_ship(self, user_id, lobby_id):
+        pass
+
+lobby_manager = lobbyManager()

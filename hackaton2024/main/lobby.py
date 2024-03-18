@@ -16,4 +16,10 @@ class lobby():
         self.id = random.randint(10000, 99999)
 
     def to_json(self):
-        return {'id': self.id, 'ship_x': self.ship_x, 'ship_y': self.ship_y, 'players': self.players,'shoot': self.shoot, 'crashed': self.crashed}
+        return {'id': self.id, 
+                'ship_x': self.ship_x, 
+                'ship_y': self.ship_y, 
+                'players': self.players,
+                'shoot': self.shoot, 
+                'crashed': self.crashed
+                }

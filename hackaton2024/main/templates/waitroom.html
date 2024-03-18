@@ -11,9 +11,9 @@
   
   <div class="container">
     <h1>Your code: </h1>
-    <p class="code">{{ lobby_id }} </p>
+    <p class="code">{{ lobby.id }} </p>
     <h2>Current players count: </h2>
-    <p class="players-num">5 </p>
+    <p class="players-num"> {{ lobby.players | length }} </p>
 
     <form action="cosmic_co-pilot" method="post">
       {% csrf_token %}
