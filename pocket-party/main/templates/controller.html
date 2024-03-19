@@ -1,0 +1,125 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'buttons.css'%}" />
+    <title>Lobby Page</title>
+  </head>
+
+  <body>
+    <main>
+      <div class="title-bar">
+        <button class="leave-btn" onclick="goBack()">
+          <span>Leave lobby</span>
+        </button>
+        <button id="ready-button" class="leave-btn" onclick="onReady()">
+          <span>Ready</span>
+        </button>
+        <h3 class="lobby">Lobby {{ game_id }}</h3>
+      </div>
+
+      <script type="text/javascript">
+        // TODO: rework user ids
+        if (!localStorage.getItem("user_id")) {
+          // If not, store the generated user ID in local storage
+          localStorage.setItem("user_id", "{{ user_id }}");
+        }
+
+        const game_id = "{{ game_id }}";
+        const url = `ws://${window.location.host}/ws/controller/${game_id}`;
+        const ws = new WebSocket(url);
+
+        ws.onopen = function (e) {
+          ws.send(
+            JSON.stringify({
+              type: "controller_connected",
+              user_id: "{{ user_id }}",
+              user_name: "{{ user_name }}",
+            })
+          );
+        };
+
+        function goBack() {
+          window.history.back();
+        }
+
+        function onReady() {
+          ws.send(
+            JSON.stringify({
+              type: "ready",
+              user_id: "{{ user_id }}",
+            })
+          );
+          const readyButton = document.getElementById("ready-button");
+          readyButton.remove();
+        }
+
+        // Function to send direction when button is pressed
+        function startSendingDirection(event, dir) {
+          event.preventDefault();
+          ws.send(
+            JSON.stringify({
+              type: "key_down",
+              direction: dir,
+            })
+          );
+        }
+
+        // Function to send direction when button is released
+        function stopSendingDirection(event, dir) {
+          event.preventDefault();
+          ws.send(
+            JSON.stringify({
+              type: "key_up",
+              direction: dir,
+            })
+          );
+        }
+      </script>
+
+      <div id="game-buttons">
+        <div class="btn-row">
+          <div
+            id="up-btn"
+            class="game-btn"
+            ontouchstart="startSendingDirection(event, 'up')"
+            ontouchend="stopSendingDirection(event, 'up')"
+            onmousedown="startSendingDirection(event, 'up')"
+            onmouseup="stopSendingDirection(event, 'up')"
+          ></div>
+        </div>
+        <div class="btn-row middle">
+          <div
+            id="left-btn"
+            class="game-btn"
+            ontouchstart="startSendingDirection(event, 'left')"
+            ontouchend="stopSendingDirection(event, 'left')"
+            onmousedown="startSendingDirection(event, 'left')"
+            onmouseup="stopSendingDirection(event, 'left')"
+          ></div>
+          <div
+            id="right-btn"
+            class="game-btn"
+            ontouchstart="startSendingDirection(event, 'right')"
+            ontouchend="stopSendingDirection(event, 'right')"
+            onmousedown="startSendingDirection(event, 'right')"
+            onmouseup="stopSendingDirection(event, 'right')"
+          ></div>
+        </div>
+        <div class="btn-row">
+          <div
+            id="down-btn"
+            class="game-btn"
+            ontouchstart="startSendingDirection(event, 'down')"
+            ontouchend="stopSendingDirection(event, 'down')"
+            onmousedown="startSendingDirection(event, 'down')"
+            onmouseup="stopSendingDirection(event, 'down')"
+          ></div>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>

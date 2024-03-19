@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {% load static %}
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lobbies</title>
+
+    <link rel="stylesheet" href="{% static 'buttons.css'%}" />
+  </head>
+
+  <body>
+    <div class="title-bar">
+      <form class="button" action="/">
+        <button class="leave-btn back-btn" type="submit">
+          <span>&larr; Back</span>
+        </button>
+      </form>
+      <h1 class="title">Active lobbies</h1>
+    </div>
+    <main>
+      <div class="container">
+        <input name="user_name" id="user_name_input" />
+
+        {% for lobby in lobbies %}
+        <li>
+          <form
+            action="{% url 'controller' game_id=lobby.id %}"
+            method="post"
+            style="display: inline"
+          >
+            {% csrf_token %}
+            <input type="hidden" name="user_name" id="user_name" value="" />
+            <button class="lobby-btn" type="submit" onclick="setUserName()">
+              Join Lobby {{ lobby.id }}
+            </button>
+          </form>
+        </li>
+        {% endfor %}
+      </div>
+      <form class="waitroom" action="lobbies" method="post">
+        {% csrf_token %}
+        <button type="submit" class="leave-btn create-lobby">
+          <span>Create new lobby</span>
+        </button>
+      </form>
+    </main>
+  </body>
+
+  <script>
+    // Function to set the value of the user_name input field
+    function setUserName() {
+      console.log(
+        document.getElementById("user_name").value,
+        document.getElementById("user_name_input").value
+      );
+      document.getElementById("user_name").value =
+        document.getElementById("user_name_input").value;
+    }
+  </script>
+</html>

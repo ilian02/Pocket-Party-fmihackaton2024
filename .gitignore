@@ -4,3 +4,4 @@ hackaton2024/main/db.json
 __pycache__/
 *.pyo
 hackaton2024/db.sqlite3
+.DS_Store
